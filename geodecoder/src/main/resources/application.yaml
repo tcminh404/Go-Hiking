@@ -1,0 +1,28 @@
+server:
+  port: ${SERVER_PORT:9000}
+
+spring:
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    self-config:
+      max-attempts: ${RABBITMQ_MAX_ATTEMPTS:3}
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: geodecoder
+      username: mongoadmin
+      password: mongoadmin
+  mapservice:
+    server: hereapi
+    offset: 0.0
+    
+map:
+  hereapi:
+    key: G--0SSjrus1VM1PIBs75jm48Vcras6cDUHgvR39KxQc
+    limit: 10
+  googleapi:
+    key: null
+    limit: null
