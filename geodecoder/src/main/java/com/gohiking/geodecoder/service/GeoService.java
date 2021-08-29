@@ -3,7 +3,6 @@ package com.gohiking.geodecoder.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -39,6 +38,7 @@ public class GeoService {
         else {
             MapService mapService = mapFactory.getMapService();
             location = mapService.getLocation(lat, lon);
+            log.info("Call map service");
             geoDataRepository.save(location);
         }
         return location;
