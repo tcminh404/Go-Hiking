@@ -1,15 +1,33 @@
 package com.gohiking.auth.dbaccess.model;
 
-import com.gohiking.common.domain.dto.UserDTO;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Document("user")
-public class User extends UserDTO {
+public class User {
+    @Id
+    String id;
 
+    @NotEmpty(message = "username must not be empty")
+    @NotNull(message = "username must not be null")
+    String username;
+
+    @NotEmpty(message = "password must not be empty")
+    @NotNull(message = "password must not be null")
+    String password;
+
+    @NotEmpty(message = "roles must not be empty")
+    @NotNull(message = "roles must not be null")
+    String roles;
+
+    String firstName;
+    String lastName;
+    String email;
+    String phoneNumber;
 }

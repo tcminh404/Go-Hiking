@@ -1,1 +1,9 @@
+server:
+  port: 9010
 
+spring:
+  application:
+    name: authserver
+  data:
+    mongodb:
+      uri: mongodb://mongoadmin:mongoadmin@localhost:27017/authservice?authSource=admin&connectTimeoutms=5000&serverSelectionTimeoutMS=10000
