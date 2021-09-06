@@ -34,4 +34,19 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    public User updateUser(User currentUser, User updateUser) {
+        boolean isUsernameExist = userRepository.existsByUsername(updateUser.getUsername());
+        if (isUsernameExist) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "username: User name already exist");
+        } else {
+            if (currentUser.getRoles().equals(NORMAL_USER)) {
+                if (!currentUser.getId().equals(updateUser.getId()))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User don't have permission");
+                else
+                    updateUser.setRoles(NORMAL_USER);
+            }
+            return userRepository.save(updateUser);
+        }
+    }
+
 }

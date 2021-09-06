@@ -2,9 +2,10 @@ package com.gohiking.auth.controller;
 
 import java.security.Principal;
 
+import com.gohiking.auth.dbaccess.mapper.DTO;
 import com.gohiking.auth.dbaccess.model.User;
-import com.gohiking.auth.dbaccess.repository.UserRepository;
 import com.gohiking.auth.service.UserService;
+import com.gohiking.common.domain.dto.UserDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class UserController {
         return userService.createUser(newUser);
     }
 
+    @DTO(UserDTO.class)
     @GetMapping("/user/info")
     public User getUserInfo(Principal principal) {
         if (principal == null) {
@@ -35,6 +37,15 @@ public class UserController {
         }
         User user = userService.getUserInfoByUsername(principal.getName());
         return user;
+    }
+
+    @PutMapping("/user/update")
+    public User updateUser(Principal principal, @RequestBody User updateUser) {
+        if (principal == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expires");
+        }
+        User currentUser = userService.getUserInfoByUsername(principal.getName());
+        return userService.updateUser(currentUser, updateUser);
     }
 
 }
