@@ -1,0 +1,8 @@
+<form fxLayout="column" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <input type="text" placeholder="Username" formControlName="username">
+  <input type="password" placeholder="Password" formControlName="password">
+  <button mat-raised-button [disabled]="loading" color="primary" [class.spinner]="loading" class="agi-mv-1 agi-btn-large"
+    autoid="LoginPage_Btn_Login">
+    LOGIN
+  </button>
+</form>

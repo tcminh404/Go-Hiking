@@ -2,7 +2,7 @@ import { USER_NAME_KEY, PASSWORD_KEY, CLIENT_ID } from "src/constants/cookie.key
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "src/constants/cookie.key";
 import { CookieService } from "ngx-cookie-service";
 import { Injectable } from "@angular/core";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable({
     providedIn: 'root',

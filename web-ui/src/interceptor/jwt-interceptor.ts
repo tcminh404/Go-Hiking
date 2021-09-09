@@ -4,7 +4,6 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/c
 import { Observable } from 'rxjs'
 import { API } from 'src/constants/api.path'
 import { AUTH_HEADER } from 'src/constants/auth'
-import { ExcludeUrls } from 'src/enums/exclude-url.enum'
 import { AuthService } from 'src/services/auth/auth.service'
 
 @Injectable()
@@ -15,20 +14,10 @@ export class JwtInterceptor implements HttpInterceptor {
         if (request.url.endsWith(API.LOGIN)) {
             request = authHeader(request)
         } else {
-            request = header(request, getToken(request.url, this.cookie, this.companyService))
+            request = header(request, getToken(request.url, this.cookie))
         }
         return next.handle(request)
     }
-}
-const isExcludeUrls = (url: string): boolean => {
-    let isExclude = false
-    ExcludeUrls.forEach((item) => {
-        if (url.includes(item)) {
-            isExclude = true
-            return
-        }
-    })
-    return isExclude
 }
 const authHeader = (request: HttpRequest<any>) => {
     return request.clone({
@@ -43,17 +32,6 @@ export const header = (request: HttpRequest<any>, token) => {
         setHeaders: { Authorization: token },
     })
 }
-export const getToken = (url: string, cookie, companyService) => {
-    let token = ''
-    let shadowToken = null
-    if (!isExcludeUrls(url)) {
-        shadowToken = companyService.shadowToken
-    }
-    const primaryToken = cookie.accessToken
-    if (shadowToken) {
-        token = shadowToken
-    } else {
-        token = primaryToken
-    }
-    return token
+export const getToken = (url: string, cookie) => {
+    return cookie.accessToken
 }

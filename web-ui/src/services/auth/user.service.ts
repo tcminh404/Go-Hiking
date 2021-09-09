@@ -120,7 +120,7 @@ export class UserService {
     return this.api.checkEmail(email)
   }
   /** Find user by user name
-   * @return Uer | null
+   * @return User | null
    */
   find(username: string): User {
     if (Util.isEmptyString(username)) {

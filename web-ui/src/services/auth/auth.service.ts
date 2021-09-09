@@ -1,15 +1,10 @@
-import { TimezoneService } from 'src/services/timezone.service'
-import { CompanyService } from 'src/services/auth/companies.service'
+
 import { map, concatMap, catchError, finalize } from 'rxjs/operators'
 import { AuthApi } from 'src/api/auth/auth'
 import { Injectable } from '@angular/core'
 import { AuthCookieService } from './auth-cookie.service'
 import { UserService } from './user.service'
 import { BehaviorSubject, throwError, Observable, Subscription } from 'rxjs'
-import { ClientActiveTrackingService } from './client-active-tracking.service'
-import { EVENTS } from 'src/constants/client-tracking'
-import { MatDialog } from '@angular/material'
-import { ClientInactiveComponent } from 'src/app/dialog/client-inactive/client-inactive.component'
 
 @Injectable({
     providedIn: 'root',
@@ -22,11 +17,7 @@ export class AuthService {
     constructor(
         private api: AuthApi,
         private cookie: AuthCookieService,
-        private userService: UserService,
-        private companyService: CompanyService,
-        private clientTracking: ClientActiveTrackingService,
-        private dialog: MatDialog,
-        private timezone: TimezoneService
+        private userService: UserService
     ) {
         this.refreshCompleteSubject = new BehaviorSubject(null)
     }
@@ -64,27 +55,12 @@ export class AuthService {
     info() {
         return this.userService.info().pipe(
             map((user) => {
-                this.timezone.zone = user.timezone
                 this._isLoggedIn = true
-                this.clientTracking.start(window, EVENTS)
-                this._subscribes()
                 return user
-            }),
-            concatMap((user) => {
-                this.companyService.role = user.roles
-                return this.companyService.all().pipe(
-                    map((companies) => {
-                        this.companyService.company = this.companyService.find(user.companyId)
-                        return { user, companies }
-                    })
-                )
             })
         )
     }
     clear() {
-        // this.clientTracking.stop()
-        this._unsubscribes()
-        this.companyService.clear()
         this._isLoggedIn = false
         this._isRefreshing = false
         this.cookie.clear()
@@ -112,26 +88,7 @@ export class AuthService {
     }
     refresh() {
         this._isRefreshing = true
-        return this._refresh().pipe(
-            concatMap((token) =>
-                this.companyService.refreshShadow().pipe(
-                    map((shadow) => {
-                        this._isRefreshing = false
-                        this.refreshCompleteSubject.next(shadow)
-                        return shadow
-                    }),
-                    catchError((err) => {
-                        this._isRefreshing = false
-                        this.refreshCompleteSubject.next(null)
-                        return throwError(err)
-                    })
-                )
-            ),
-            catchError((err) => {
-                this._isRefreshing = false
-                return throwError(err)
-            })
-        )
+        return this._refresh()
     }
     private _refresh() {
         const refreshToken = this.cookie.refreshToken
@@ -149,27 +106,5 @@ export class AuthService {
         } else {
             return throwError({ message: 'No refresh token found' })
         }
-    }
-    private _subscribes() {
-        this.clientSubscription = this.clientTracking.inactive$.subscribe((value) => {
-            if (value) {
-                this.clientTracking.stop()
-                const dialogRef = this.dialog.open(ClientInactiveComponent, {
-                    width: '22em',
-                    data: this,
-                    disableClose: true,
-                })
-                dialogRef.afterClosed().subscribe((keepSession) => {
-                    if (keepSession) {
-                        this.clientTracking.start(window, EVENTS)
-                        this._unsubscribes()
-                        this._subscribes()
-                    }
-                })
-            }
-        })
-    }
-    private _unsubscribes() {
-        this.clientSubscription.unsubscribe()
     }
 }
