@@ -1,8 +1,30 @@
 <form fxLayout="column" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <input type="text" placeholder="Username" formControlName="username">
-  <input type="password" placeholder="Password" formControlName="password">
-  <button mat-raised-button [disabled]="loading" color="primary" [class.spinner]="loading" class="agi-mv-1 agi-btn-large"
-    autoid="LoginPage_Btn_Login">
-    LOGIN
+  <mat-form-field appearance="fill" class="mat-full-width">
+    <mat-label>Username</mat-label>
+    <input matInput placeholder="Enter username" formControlName='username' required>
+    <mat-error *ngIf="f.username.errors?.required">Username required</mat-error>
+  </mat-form-field>
+  
+  <mat-form-field appearance="fill" class="mat-full-width">
+    <mat-label>Password</mat-label>
+    <input matInput placeholder="Enter password" formControlName='password' [type]="hide ? 'password' : 'text'" required>
+    <div matSuffix (click)="hide = !hide">
+      <mat-icon>
+        {{ hide ? 'visibility_off' : 'visibility' }}
+      </mat-icon>
+    </div>
+    <mat-error *ngIf="f.username.errors?.required">Username required</mat-error>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="start center" [fxShow]="errorMsg">
+    <mat-icon>error_outline</mat-icon>
+    <span class="mat-caption" class="agi-p-1">
+      {{ errorMsg }}
+    </span>
+  </div>
+  <button mat-raised-button [disabled]="loading" [class.spinner]="loading">
+    Login
   </button>
 </form>
+<div fxLayout="row" fxLayoutAlign="end center">
+  <button mat-button (click)="onNavigateToRegisterForm()">Register</button>
+</div>

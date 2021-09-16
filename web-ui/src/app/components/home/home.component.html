@@ -1,0 +1,15 @@
+<mat-card fxLayout='row' fxLayoutAlign="space-between">
+  <button mat-button (click)="home()">
+    <mat-icon>home</mat-icon>
+  </button>
+  <button mat-button *ngIf="isAdmin" (click)="admin()">Admin</button>
+  <button mat-button [matMenuTriggerFor]="userProfile">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+</mat-card>
+
+<mat-menu #userProfile="matMenu">
+  <button mat-menu-item (click)="login()" *ngIf="!isLogin">Login</button>
+  <button mat-menu-item (click)="profile()" *ngIf="isLogin">Profile</button>
+  <button mat-menu-item (click)="logout()" *ngIf="isLogin">Logout</button>
+</mat-menu>

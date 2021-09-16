@@ -6,7 +6,6 @@
 		<groupId>com.gohiking</groupId>
 		<artifactId>gohiking</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath/>
 	</parent>
 
 	<groupId>com.gohiking</groupId>

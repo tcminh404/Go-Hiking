@@ -14,7 +14,7 @@ export class JwtInterceptor implements HttpInterceptor {
         if (request.url.endsWith(API.LOGIN)) {
             request = authHeader(request)
         } else {
-            request = header(request, getToken(request.url, this.cookie))
+            request = header(request, getToken(this.cookie))
         }
         return next.handle(request)
     }
@@ -32,6 +32,6 @@ export const header = (request: HttpRequest<any>, token) => {
         setHeaders: { Authorization: token },
     })
 }
-export const getToken = (url: string, cookie) => {
+export const getToken = (cookie) => {
     return cookie.accessToken
 }

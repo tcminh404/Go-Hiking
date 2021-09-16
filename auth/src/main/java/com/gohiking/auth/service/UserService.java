@@ -11,6 +11,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static com.gohiking.common.constant.GohikingConstant.*;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -47,6 +49,10 @@ public class UserService {
             }
             return userRepository.save(updateUser);
         }
+    }
+
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
 }

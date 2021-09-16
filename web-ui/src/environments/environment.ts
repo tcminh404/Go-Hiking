@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   appName: "Go-Hiking",
-  host_auth: "localhost:9010"
+  host_auth: "http://localhost:9010"
 };
 
 /*

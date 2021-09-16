@@ -1,5 +1,5 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { AuthService } from 'src/services/auth/auth.service';
 import { AuthCookieService } from 'src/services/auth/auth-cookie.service';
@@ -7,12 +7,14 @@ import { AuthCookieService } from 'src/services/auth/auth-cookie.service';
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.scss']
+  styleUrls: ['./login-form.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LoginFormComponent implements OnInit {
-  @Output() navigateToForgotPassword = new EventEmitter<boolean>()
+  @Output() navigateToRegisterForm = new EventEmitter<boolean>()
 
   loginForm: FormGroup
+  hide = true
 
   loading = false
   submitted = false
@@ -22,7 +24,7 @@ export class LoginFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private routes: Router,
+    private router: Router,
     private auth: AuthService,
     private cookie: AuthCookieService
   ) { }
@@ -39,11 +41,44 @@ export class LoginFormComponent implements OnInit {
   }
 
   onSubmit() {
-
+    this.submitted = true
+    if (this.loginForm.invalid) {
+      return
+    }
+    this.startLoading()
+    this.errorMsg = null
+    this.auth.login(this.f.username.value, this.f.password.value).subscribe(
+      (info) => {
+        this.router.navigate([this.returnUrl])
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.errorMsg = 'Username or Password is incorrect'
+        } else {
+          this.errorMsg = error.msg || error.error.error || "UNKNOWN_ERROR"
+        }
+        this.stopLoading()
+      },
+      () => {
+        setTimeout(() => {
+          this.stopLoading()
+        }, 500)
+      }
+    )
   }
 
   get f() {
     return this.loginForm.controls
+  }
+  private startLoading() {
+    this.loading = true
+  }
+  /** stop form loading status */
+  private stopLoading() {
+    this.loading = false
+  }
+  onNavigateToRegisterForm() {
+    this.navigateToRegisterForm.emit(true)
   }
 
 }

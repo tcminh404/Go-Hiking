@@ -1,0 +1,9 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+  <mat-card>
+    <p>Username: {{user.username}}</p>
+    <p>First Name: {{user.firstName}}</p>
+    <p>Last Name: {{user.lastName}}</p>
+    <p>Email: {{user.email}}</p>
+    <p *ngIf="isAdmin">Roles: Admin</p>
+  </mat-card>
+</div>

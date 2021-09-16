@@ -1,6 +1,9 @@
 package com.gohiking.auth.controller;
 
 import java.security.Principal;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.gohiking.auth.dbaccess.mapper.DTO;
 import com.gohiking.auth.dbaccess.model.User;
@@ -9,20 +12,22 @@ import com.gohiking.common.domain.dto.UserDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import static com.gohiking.common.constant.GohikingConstant.*;
 
 @RestController
 @RequestMapping(UserController.AUTH_SERVICE)
 public class UserController {
-    public static final String AUTH_SERVICE = "/rest/auth";
+    public static final String AUTH_SERVICE = "/rest/auth/v1";
 
     @Autowired
     UserService userService;
+    @Autowired
+    private TokenStore tokenStore;
 
     @PutMapping("/user/create")
     public User createUser(@RequestBody User newUser) {
@@ -48,4 +53,32 @@ public class UserController {
         return userService.updateUser(currentUser, updateUser);
     }
 
+    @GetMapping("/users")
+    public List<User> getUsers(Principal principal) {
+        if (principal == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expires");
+        }
+        User currentUser = userService.getUserInfoByUsername(principal.getName());
+        if (currentUser.getRoles().equals(ADMIN)) {
+            return userService.getUsers();
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User don't have permission");
+        }
+    }
+
+    @DeleteMapping("/user/logout")
+    public void logout(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null) {
+            try {
+                String tokenValue = authHeader.replace("Bearer", "").trim();
+                OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
+                tokenStore.removeAccessToken(accessToken);
+            } catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "FAILED");
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "FAILED");
+        }
+    }
 }

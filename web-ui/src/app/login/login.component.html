@@ -1,1 +1,9 @@
-<app-login-form></app-login-form>
+<div fxLayout="column" fxLayoutAlign="center center" style="margin: 1em;">
+    <mat-card fxLayout='column' fxLayoutAlign='center center'>
+        <mat-icon style="scale: 10;">account_circle</mat-icon>
+        <app-login-form *ngIf="isLoginFormDisplay" (navigateToRegisterForm)="$event? navigateToRegisterForm() : null">
+        </app-login-form>
+        <app-register-form *ngIf="isRegisterFormDisplay" (navigateToLoginForm)="$event? navigateToLoginForm() : null">
+        </app-register-form>
+    </mat-card>
+</div>

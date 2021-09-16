@@ -1,0 +1,57 @@
+<form fxLayout="column" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill" class="mat-full-width">
+    <mat-label>Username</mat-label>
+    <input matInput placeholder="Enter username" formControlName='username' required>
+    <mat-error *ngIf="f.username.errors?.required">Username required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="mat-full-width">
+    <mat-label>Password</mat-label>
+    <input matInput placeholder="Enter password" formControlName='password' [type]="hidePass ? 'password' : 'text'"
+      required>
+    <div matSuffix (click)="hidePass = !hidePass">
+      <mat-icon>
+        {{ hidePass ? 'visibility_off' : 'visibility' }}
+      </mat-icon>
+    </div>
+    <mat-error *ngIf="f.password.errors?.required">Password required</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="mat-full-width">
+    <mat-label>Retype Password</mat-label>
+    <input matInput placeholder="Enter password" formControlName='repassword' [type]="hideRePass ? 'password' : 'text'"
+      required>
+    <div matSuffix (click)="hideRePass = !hideRePass">
+      <mat-icon>
+        {{ hideRePass ? 'visibility_off' : 'visibility' }}
+      </mat-icon>
+    </div>
+    <mat-error *ngIf="f.repassword.errors?.required">Retype password required</mat-error>
+    <mat-error *ngIf="f.repassword.errors?.mustMatch">Passwords do not match</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="mat-full-width">
+    <mat-label>First Name</mat-label>
+    <input matInput placeholder="Enter password" formControlName='firstName'>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="mat-full-width">
+    <mat-label>Last Name</mat-label>
+    <input matInput placeholder="Enter password" formControlName='lastName'>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="mat-full-width">
+    <mat-label>Email</mat-label>
+    <input matInput placeholder="Enter Email" formControlName='email'>
+    <mat-error *ngIf="f.email.errors?.email">Email not valid</mat-error>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="start center" [fxShow]="errorMsg">
+    <mat-icon>error_outline</mat-icon>
+    <span class="mat-caption" class="agi-p-1">
+      {{ errorMsg }}
+    </span>
+  </div>
+  <button mat-raised-button [disabled]="loading" [class.spinner]="loading">
+    Register
+  </button>
+</form>
+<div fxLayout="row" fxLayoutAlign="end center">
+  <button mat-button (click)="onNavigateToLoginForm()">Login</button>
+</div>

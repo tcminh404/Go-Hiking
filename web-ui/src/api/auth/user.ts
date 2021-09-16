@@ -30,7 +30,7 @@ export class UserApi {
     add(user: User, password: string): Observable<User> {
         const body: any = Object.assign({}, user)
         body.password = password
-        return this.http.post<User>(`${BASE_PATH}${this.MANAGED_PATH}${this.CREATE_PATH}`, body)
+        return this.http.put<User>(`${BASE_PATH}${this.MANAGED_PATH}${this.CREATE_PATH}`, body)
     }
     update(user: User): Observable<User> {
         return this.http.post<User>(`${BASE_PATH}${this.MANAGED_PATH}${this.UPDATE_PATH}/${user.id}`, user)
@@ -64,11 +64,9 @@ export class UserApi {
 }
 interface User {
     id: string
-    companyId: string
     username: string
     email: string
     roles: AccessLevel
     firstName: string
     lastName: string
-    timezone: string
 }
