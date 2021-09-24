@@ -2,21 +2,11 @@ server:
   port: ${SERVER_PORT:9000}
 
 spring:
-  rabbitmq:
-    host: ${RABBITMQ_HOST:localhost}
-    username: ${RABBITMQ_USERNAME:guest}
-    password: ${RABBITMQ_PASSWORD:guest}
-    self-config:
-      max-attempts: ${RABBITMQ_MAX_ATTEMPTS:3}
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: geodecoder
-      username: mongoadmin
-      password: mongoadmin
+      uri: mongodb://mongoadmin:mongoadmin@localhost:27017/geodecoderservice?authSource=admin&connectTimeoutms=5000&serverSelectionTimeoutMS=10000
   mapservice:
-    server: hereapi
+    server: heremap
     offset: 0.0
     
 map:

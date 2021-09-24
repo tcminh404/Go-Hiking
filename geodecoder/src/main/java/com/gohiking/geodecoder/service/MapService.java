@@ -6,4 +6,5 @@ public interface MapService {
 
     public GeoData getLocation(Double lat, Double lon);
 
+    public Object[] getAllLocation();
 }

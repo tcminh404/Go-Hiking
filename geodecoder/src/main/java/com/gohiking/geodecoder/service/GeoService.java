@@ -11,8 +11,6 @@ import lombok.extern.log4j.Log4j2;
 
 import com.gohiking.geodecoder.dbaccess.model.GeoData;
 import com.gohiking.geodecoder.dbaccess.repository.GeoDataRepository;
-import com.gohiking.geodecoder.service.map.BaseMapFactory;
-import com.gohiking.geodecoder.service.map.MapFactory;
 
 @Service
 @Log4j2
@@ -24,24 +22,31 @@ public class GeoService {
     @Value("${spring.mapservice.offset}")
     private Double offset;
 
-    @Value("${spring.mapservice.server}")
-    public String server;
+    @Autowired
+    MapService mapService;
 
-    private BaseMapFactory mapFactory = new MapFactory();
+    public GeoData getAddress(double lat, double lng) {
+        return mapService.getLocation(lat, lng);
+    }
 
     public GeoData getData(double lat, double lon, double offset) {
         List<GeoData> data = geoDataRepository.findLocation(lat - offset, lat + offset, lon - offset, lon + offset);
         GeoData location = null;
-        System.out.println(server);
         if (!data.isEmpty())
             location = data.get(0);
         else {
-            MapService mapService = mapFactory.getMapService();
             location = mapService.getLocation(lat, lon);
-            log.info("Call map service");
-            geoDataRepository.save(location);
+            try {
+                geoDataRepository.save(location);
+            } catch (Exception e) {
+                log.info("Error save entity: " + location);
+            }
         }
         return location;
+    }
+
+    public List<GeoData> getAllLocation() {
+        return geoDataRepository.findAll();
     }
 
 }

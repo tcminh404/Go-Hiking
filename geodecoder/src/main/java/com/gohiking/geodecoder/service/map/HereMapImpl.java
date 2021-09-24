@@ -1,50 +1,61 @@
 package com.gohiking.geodecoder.service.map;
 
-import javax.annotation.PostConstruct;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gohiking.geodecoder.dbaccess.model.GeoData;
+import com.gohiking.geodecoder.dbaccess.model.HereMapGeoData;
+import com.gohiking.geodecoder.dbaccess.model.HereResult;
+import com.gohiking.geodecoder.dbaccess.repository.HereMapRepository;
 import com.gohiking.geodecoder.service.MapService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
+@Component("heremap")
 public class HereMapImpl implements MapService {
 
+    @Value("${map.hereapi.key}")
     private String key;
 
-    @PostConstruct
-    void init() {
-        // this.key = super.hereKey;
-    }
+    @Autowired
+    private HereMapRepository hereMapRepository;
 
     @Override
-    public GeoData getLocation(Double lat, Double lon) {
+    public GeoData getLocation(Double lat, Double lng) {
         GeoData location = new GeoData();
-        JsonNode hereLocal = hereLocation(lat, lon);
-        if (hereLocal.equals(null))
+        HereMapGeoData hereLocal = hereLocation(lat, lng);
+        if (hereLocal == null) {
+            log.info("Error get geo data HERE map");
             throw new RuntimeException("Error when decode location");
-
-        location.setGeoId(hereLocal.get("items").get(0).get("id").toString());
-        location.setLatitude(lat);
-        location.setLongitude(lon);
-        location.setAddress(hereLocal.get("items").get(0).get("title").toString());
+        }
+        try {
+            location.setGeoId(hereLocal.getId());
+            location.setLatitude(hereLocal.getPosition().getLat());
+            location.setLongitude(hereLocal.getPosition().getLng());
+            location.setAddress(hereLocal.getAddress().getLabel());
+        } catch (Exception e) {
+            log.info("Error read location: " + location + ", error: " + e);
+        }
         return location;
     }
 
-    public JsonNode hereLocation(Double lat, Double lon) {
-        final String uri = "https://revgeocode.search.hereapi.com/v1/revgeocode?at=" + lat + "," + lon + "&lang=en-US"
+    public HereMapGeoData hereLocation(Double lat, Double lng) {
+        final String uri = "https://revgeocode.search.hereapi.com/v1/revgeocode?at=" + lat + "," + lng + "&lang=en-US"
                 + "&apikey=" + key;
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(uri, String.class);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = null;
-        try {
-            rootNode = mapper.readTree(result);
-        } catch (Exception e) {
-            return null;
+        HereResult result = restTemplate.getForObject(uri, HereResult.class);
+        for (HereMapGeoData geoData : result.getItems()) {
+            hereMapRepository.save(geoData);
         }
-        return rootNode;
+        return result.getItems().get(0);
+    }
+
+    @Override
+    public Object[] getAllLocation() {
+        return hereMapRepository.findAll().toArray();
     }
 
 }

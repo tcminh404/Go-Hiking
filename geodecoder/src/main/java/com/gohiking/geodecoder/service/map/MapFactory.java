@@ -1,38 +1,40 @@
 package com.gohiking.geodecoder.service.map;
 
-import javax.annotation.PostConstruct;
-
 import com.gohiking.geodecoder.service.MapService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
-public class MapFactory extends BaseMapFactory {
+import static com.gohiking.common.constant.GohikingConstant.MapServiceProvider.*;
 
-    private String server;
+@Configuration
+public class MapFactory {
+
+    @Value("${spring.mapservice.server}")
+    String server;
 
     @Autowired
-    ResourceLoader resourceLoader;
+    @Qualifier("heremap")
+    MapService hereMapService;
 
-    @PostConstruct
-    public void init(@Value("${spring.mapservice.server}") String server) {
-        this.server = server;
-    }
+    @Autowired
+    @Qualifier("googlemap")
+    MapService googleMapService;
 
-    @Override
+    @Bean
+    @Primary
     public MapService getMapService() {
-        MapService mapService = null;
-        System.out.println(resourceLoader.getResource("classpath:src/main/resources/application.yml"));
-        switch (server.toLowerCase()) {
-            case "hereapi":
-                mapService = new HereMapImpl();
-                break;
+        switch (server) {
+            case HEREMAP:
+                return hereMapService;
+            case GOOGLEMAP:
+                return googleMapService;
             default:
-                throw new IllegalArgumentException("No map service " + server);
+                return null;
         }
-
-        return mapService;
     }
-
 }
