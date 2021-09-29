@@ -1,0 +1,15 @@
+<div style="margin: 1em;">
+    <div *ngFor="let post of posts" style="list-style: none;">
+        <mat-card class="post-card">
+            <mat-card-content>
+                <mat-card-title [routerLink]="['/post', post.postId]" class="clickable"> {{post.title}}</mat-card-title>
+                <mat-card-subtitle> {{post.postId}} </mat-card-subtitle>
+            </mat-card-content>
+            <mat-card-actions align='end' *ngIf="user">
+                <div *ngIf="post.username === user.username">
+                    <mat-icon (click)="onDelete(post.postId)" class="clickable">delete</mat-icon>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AdminComponent } from './admin.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { MaterialModule } from 'src/material/material.module';
+import { GeoManagerComponent } from './geo-manager/geo-manager.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import { MaterialModule } from 'src/material/material.module';
     MaterialModule,
     FlexLayoutModule
   ],
-  declarations: [AdminComponent, UserManagerComponent],
-  exports: [AdminComponent, UserManagerComponent]
+  declarations: [AdminComponent, UserManagerComponent, GeoManagerComponent],
+  exports: [AdminComponent, UserManagerComponent, GeoManagerComponent]
 })
 export class AdminModule { }

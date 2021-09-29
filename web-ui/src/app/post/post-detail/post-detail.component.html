@@ -1,0 +1,7 @@
+<div *ngIf="post$ | async as post">
+    <mat-card style="margin: 1em;">
+        <h1>{{ post.title }}</h1>
+        <div [innerHTML]="post.content"></div>
+        <button (click)="gotoPosts()">Back</button>
+    </mat-card>
+</div>

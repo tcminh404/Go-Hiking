@@ -1,7 +1,7 @@
+import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ComponentsComponent } from './components.component';
 import { MaterialModule } from 'src/material/material.module';
 import { HomeComponent } from './home/home.component';
 
@@ -9,9 +9,10 @@ import { HomeComponent } from './home/home.component';
   imports: [
     CommonModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    RouterModule
   ],
-  declarations: [ComponentsComponent, HomeComponent],
+  declarations: [HomeComponent],
   exports: [HomeComponent]
 })
 export class ComponentsModule { }

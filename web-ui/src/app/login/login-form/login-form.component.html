@@ -15,12 +15,12 @@
     </div>
     <mat-error *ngIf="f.username.errors?.required">Username required</mat-error>
   </mat-form-field>
-  <div fxLayout="row" fxLayoutAlign="start center" [fxShow]="errorMsg">
+  <mat-error fxLayout="row" fxLayoutAlign="start center" [fxShow]="errorMsg">
     <mat-icon>error_outline</mat-icon>
     <span class="mat-caption" class="agi-p-1">
       {{ errorMsg }}
     </span>
-  </div>
+  </mat-error>
   <button mat-raised-button [disabled]="loading" [class.spinner]="loading">
     Login
   </button>

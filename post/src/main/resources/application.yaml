@@ -1,0 +1,7 @@
+server:
+  port: ${SERVER_PORT:9020}
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://mongoadmin:mongoadmin@localhost:27017/postservice?authSource=admin&connectTimeoutms=5000&serverSelectionTimeoutMS=10000

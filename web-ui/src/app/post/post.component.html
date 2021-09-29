@@ -1,0 +1,5 @@
+<mat-card fxLayout='row' fxLayoutAlign="space-between" *ngIf="user">
+    <button mat-button>My Post</button>
+    <button mat-button (click)="newPost()">New Post</button>
+</mat-card>
+<app-post-list [posts]='posts' [user]='user'></app-post-list>

@@ -8,10 +8,11 @@ import com.gohiking.geodecoder.service.GeoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
-@RequestMapping(GeodecoderController.AUTH_SERVICE)
+@RequestMapping(GeodecoderController.GEO_SERVICE)
 public class GeodecoderController {
-    public static final String AUTH_SERVICE = "/rest/geo/v1";
+    public static final String GEO_SERVICE = "/rest/geo/v1";
 
     @Autowired
     GeoService geoService;

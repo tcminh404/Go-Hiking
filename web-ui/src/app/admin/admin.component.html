@@ -1,1 +1,8 @@
-<app-user-manager></app-user-manager>
+<mat-tab-group>
+    <mat-tab label="User">
+        <app-user-manager [users]='users'></app-user-manager>
+    </mat-tab>
+    <mat-tab label="Geo Location">
+        <app-geo-manager [geos]='geos'></app-geo-manager>
+    </mat-tab>
+</mat-tab-group>

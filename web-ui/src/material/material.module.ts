@@ -10,6 +10,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
     declarations: [],
@@ -24,7 +26,9 @@ import { MatTableModule } from '@angular/material/table';
         MatCardModule,
         MatDialogModule,
         MatMenuModule,
-        MatTableModule
+        MatTableModule,
+        MatToolbarModule,
+        MatTabsModule,
     ],
     providers: [],
 })
