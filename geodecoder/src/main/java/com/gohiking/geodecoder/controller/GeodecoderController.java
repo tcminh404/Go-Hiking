@@ -18,7 +18,8 @@ public class GeodecoderController {
     GeoService geoService;
 
     @GetMapping("geo")
-    public GeoData getAddress(double lat, double lng, double offset) {
+    public GeoData getAddress(double lat, double lng,
+            @RequestParam(required = false, defaultValue = "0.0") double offset) {
         return geoService.getData(lat, lng, offset);
     }
 

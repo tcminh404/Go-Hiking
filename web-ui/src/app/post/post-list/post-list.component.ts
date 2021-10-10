@@ -1,5 +1,5 @@
 import { Post } from 'src/models/post';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from 'src/models/user';
 
 @Component({
@@ -10,6 +10,8 @@ import { User } from 'src/models/user';
 export class PostListComponent implements OnInit {
   @Input() posts: Post[]
   @Input() user: User
+  @Output() delete = new EventEmitter<Post>()
+  @Output() edit = new EventEmitter<Post>()
   dataSource: Post[]
   displayedColumns: string[] = ['postId', 'parentId', 'type', 'title', 'content'];
 
@@ -20,10 +22,13 @@ export class PostListComponent implements OnInit {
 
   ngOnChanges() {
     this.dataSource = this.posts
-    console.log(this.posts);
   }
 
-  onDelete(postId: String) {
+  onDelete(post: Post) {
+    this.delete.emit(post)
+  }
 
+  onEdit(item) {
+    this.edit.emit(item)
   }
 }

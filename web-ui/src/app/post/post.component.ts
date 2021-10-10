@@ -23,18 +23,36 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.user$.subscribe(user => this.user = user)
-    this.postService.all().subscribe(posts => this.posts = posts)
+    this.postService.allPost().subscribe(posts => this.posts = posts)
   }
 
   reloadPost() {
-    this.postService.all().subscribe(posts => this.posts = posts)
+    this.postService.allPost().subscribe(posts => this.posts = posts)
   }
 
-  newPost() {
+  newPost(post: Post = null) {
     let dialogRef = this.dialog.open(NewPostComponent, {
-      data: { user: this.user }
+      data: { user: this.user, post: post }
     })
     dialogRef.afterClosed().subscribe(() => { this.reloadPost() })
   }
 
+  onDelete(post: Post) {
+    if (confirm("Are you sure to delete post: " + post.title)) {
+      this.postService.deletePost(post.postId).subscribe(
+        (info) => {
+          alert(info)
+          this.reloadPost()
+          console.log(info)
+        },
+        (error) => {
+          alert(error.error.message)
+          console.log(error)
+        }
+      )
+    }
+  }
+  onEdit(post) {
+    this.newPost(post)
+  }
 }

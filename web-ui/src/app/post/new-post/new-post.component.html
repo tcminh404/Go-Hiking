@@ -1,9 +1,21 @@
-<form [formGroup]='postForm' (ngSubmit)="onSubmit()">
+<form [formGroup]="postForm">
     <mat-form-field>
         <mat-label>Title</mat-label>
-        <input matInput placeholder="Type in title" formControlName="title" value='{{user.username}}' required>
+        <input matInput placeholder="Type in title" formControlName="title" required />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="type" required>
+            <mat-option value="post">Post</mat-option>
+            <mat-option value="story">Story</mat-option>
+        </mat-select>
     </mat-form-field>
     <angular-editor formControlName="content" [config]="editorConfig">
     </angular-editor>
-    <div fxLayout="row" fxLayoutAlign="end center"><button mat-raised-button color='primary'>Submit</button></div>
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button (click)="onSubmit()" color="primary">
+            Submit
+        </button>
+        <button mat-raised-button (click)="onCancel()">Cancel</button>
+    </div>
 </form>

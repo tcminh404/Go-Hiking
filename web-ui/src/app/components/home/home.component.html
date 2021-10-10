@@ -7,6 +7,8 @@
     [ngClass]="{ disabled: mapRla.isActive }">Map</button>
   <button mat-button routerLink="/post" routerLinkActive #postRla="routerLinkActive"
     [ngClass]="{ disabled: postRla.isActive }">Post</button>
+  <button mat-button routerLink="/geo" routerLinkActive #geoRla="routerLinkActive"
+    [ngClass]="{ disabled: geoRla.isActive }">Geo</button>
   <button mat-button *ngIf="isAdmin" (click)="admin()">Admin</button>
   <button mat-button [matMenuTriggerFor]="userProfile">
     <mat-icon>account_circle</mat-icon>
@@ -18,5 +20,5 @@
     [ngClass]="{ disabled: lgnRla.isActive }" *ngIf="!isLogin">Login</button>
   <button mat-menu-item routerLink="/profile" routerLinkActive #pflRla="routerLinkActive"
     [ngClass]="{ disabled: pflRla.isActive }" *ngIf="isLogin">Profile</button>
-  <button mat-menu-item (click)="logout()">Logout</button>
+  <button mat-menu-item (click)="logout()" *ngIf="isLogin">Logout</button>
 </mat-menu>

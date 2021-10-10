@@ -2,6 +2,53 @@
     <mat-card style="margin: 1em;">
         <h1>{{ post.title }}</h1>
         <div [innerHTML]="post.content"></div>
-        <button (click)="gotoPosts()">Back</button>
+        <div *ngIf="post.type === 'story'">
+            <div *ngFor="let item of locations">
+                <mat-card>
+                    <div fxLayout='row'>
+                        <img *ngIf="item.img" [src]='item.img' [alt]="item.postId" style="max-width: 10em;">
+                        <div>
+                            <div>Location: {{item.lat}}, {{item.lng}}: {{item.address}} </div>
+                            <div [innerHTML]="item.content"></div>
+                        </div>
+                    </div>
+                    <mat-card-actions align='end' *ngIf="user">
+                        <div *ngIf="item.username === user.username">
+                            <mat-icon (click)="onEditLocation(item)" class="clickable">edit</mat-icon>
+                            <mat-icon (click)="onDeleteLocation(item)" class="clickable">delete</mat-icon>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+        <app-new-location [hidden]="!showEditLocation" [user]='user' [parentId]='postId' [location]='locationOnEdit'
+            (reload)='reloadLocation()' (cancel)='cancelEditLocation()'></app-new-location>
+        <mat-card-actions align='end' *ngIf="user">
+            <div *ngIf="showLocationAction(post,user)">
+                <mat-icon (click)="addLocation()" class="clickable">add</mat-icon>
+            </div>
+        </mat-card-actions>
+        </mat-card>
+        <app-comment [parentId]='post.postId' [comment]='commentOnEdit' (reload)='reloadComment()' (cancel)='cancelEdit()'>
+        </app-comment>
+        <mat-card style="margin: 1em;">
+            <mat-card-title>Comment</mat-card-title>
+            <div *ngIf="display(); else noComment">
+                <mat-card-content *ngFor="let item of comments">
+                    <mat-card>
+                        <mat-card-subtitle>User: {{item.username}}</mat-card-subtitle>
+                        <mat-card-content>{{item.content}}</mat-card-content>
+                        <mat-card-actions align='end' *ngIf="user">
+                            <div *ngIf="item.username === user.username">
+                                <mat-icon (click)="onEdit(item)" class="clickable">edit</mat-icon>
+                                <mat-icon (click)="onDelete(item)" class="clickable">delete</mat-icon>
+                            </div>
+                        </mat-card-actions>
+                    </mat-card>
+                </mat-card-content>
+            </div>
+            <ng-template #noComment>
+                <mat-card-content>No comment yet</mat-card-content>
+            </ng-template>
     </mat-card>
 </div>

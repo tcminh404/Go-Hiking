@@ -11,6 +11,8 @@ import { NewPostComponent } from './new-post/new-post.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { PostDetailComponent } from './post-detail/post-detail.component';
+import { CommentComponent } from './comment/comment.component';
+import { NewLocationComponent } from './new-location/new-location.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { PostDetailComponent } from './post-detail/post-detail.component';
     PostComponent,
     PostListComponent,
     NewPostComponent,
-    PostDetailComponent
+    PostDetailComponent,
+    CommentComponent,
+    NewLocationComponent
   ],
   imports: [
     CommonModule,

@@ -29,8 +29,13 @@ export class NewPostComponent implements OnInit {
     this.postForm = this.formBuilder.group({
       title: ['', Validators.compose([Validators.required])],
       content: [''],
+      type: [{ value: (this.data.post) ? this.data.post.type : 'post', disabled: this.data.post != null }, Validators.compose([Validators.required])],
     })
     this.user = this.data.user
+    if (this.data.post) {
+      this.postForm.controls.title.setValue(this.data.post.title)
+      this.postForm.controls.content.setValue(this.data.post.content)
+    }
   }
 
   onSubmit() {
@@ -39,7 +44,8 @@ export class NewPostComponent implements OnInit {
     }
     let post: Post = this.postForm.value
     post.username = this.user.username
-    this.postService.upsert(post).subscribe(
+    if (this.data.post) post.postId = this.data.post.postId
+    this.postService.upsertPost(post).subscribe(
       (info) => {
         this.openDialog()
       },
@@ -54,10 +60,11 @@ export class NewPostComponent implements OnInit {
   }
 
   openDialog() {
+    let msg = (this.data.post) ? 'Edit post success' : 'Create new post success';
     const dialogRef = this.dialog.open(CommonDialogComponent, {
       data: {
         title: 'Success',
-        msg: 'Create new post success'
+        msg: msg
       }
     });
 
@@ -65,6 +72,10 @@ export class NewPostComponent implements OnInit {
       this.dialogRef.close()
       //this.navigateToLoginForm.emit(true)
     });
+  }
+
+  onCancel() {
+    this.dialogRef.close()
   }
 
   editorConfig: AngularEditorConfig = {
@@ -116,4 +127,5 @@ export class NewPostComponent implements OnInit {
 }
 interface NewPostData {
   user: User
+  post: Post
 }

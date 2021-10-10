@@ -1,0 +1,11 @@
+<mat-card style="margin: 1em;" *ngIf="user">
+    <form [formGroup]='commentForm' (ngSubmit)="onSubmit()">
+        <h3>Post comment</h3>
+        <angular-editor formControlName="content" [config]="editorConfig">
+        </angular-editor>
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-raised-button color='primary'>Submit</button>
+            <button mat-raised-button (click)="cancelEdit()" *ngIf="comment">Cancel</button>
+        </div>
+    </form>
+</mat-card>

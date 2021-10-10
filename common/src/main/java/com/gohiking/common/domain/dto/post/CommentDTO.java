@@ -1,10 +1,12 @@
 package com.gohiking.common.domain.dto.post;
 
-public class Location {
+import lombok.Data;
+
+@Data
+public class CommentDTO {
     String postId;
+    String parentId;
     String type;
-    double lat;
-    double lng;
-    String img;
     String content;
+    String username;
 }

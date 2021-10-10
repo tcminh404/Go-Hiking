@@ -5,3 +5,10 @@ spring:
   data:
     mongodb:
       uri: mongodb://mongoadmin:mongoadmin@localhost:27017/postservice?authSource=admin&connectTimeoutms=5000&serverSelectionTimeoutMS=10000
+
+cloudinary:
+  cloud_name: dnrr7zlre
+  api_key: '553299511552879'
+  api_secret: flNYsULNT7ZrTiOau7jEx71wW_I
+  enhance_image_tag: true
+  static_file_support: false

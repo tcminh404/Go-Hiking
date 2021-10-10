@@ -7,7 +7,8 @@
             </mat-card-content>
             <mat-card-actions align='end' *ngIf="user">
                 <div *ngIf="post.username === user.username">
-                    <mat-icon (click)="onDelete(post.postId)" class="clickable">delete</mat-icon>
+                    <mat-icon (click)="onEdit(post)" class="clickable">edit</mat-icon>
+                    <mat-icon (click)="onDelete(post)" class="clickable">delete</mat-icon>
                 </div>
             </mat-card-actions>
         </mat-card>

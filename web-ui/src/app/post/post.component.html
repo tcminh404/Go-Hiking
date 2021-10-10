@@ -2,4 +2,4 @@
     <button mat-button>My Post</button>
     <button mat-button (click)="newPost()">New Post</button>
 </mat-card>
-<app-post-list [posts]='posts' [user]='user'></app-post-list>
+<app-post-list [posts]='posts' [user]='user' (delete)="onDelete($event)" (edit)='onEdit($event)'></app-post-list>

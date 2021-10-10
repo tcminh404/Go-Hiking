@@ -1,0 +1,31 @@
+<mat-card>
+    <form [formGroup]='locationForm'>
+        <div>
+            <input type="file" id="file" (change)="uploadFile($event)" accept="image/png, image/gif, image/jpeg">
+        </div>
+        <mat-form-field>
+            <mat-label>Latitude</mat-label>
+            <input matInput placeholder="Input latitude" formControlName="lat" required>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Longitude</mat-label>
+            <input matInput placeholder="Input longitude" formControlName="lng" required>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Offset</mat-label>
+            <input matInput placeholder="Input offset" formControlName="offset">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Address</mat-label>
+            <input matInput placeholder="Address" formControlName="address">
+        </mat-form-field>
+        <button mat-raised-button (click)="getLocation()">Get address</button>
+        <mat-error>{{errorMsg}}</mat-error>
+        <angular-editor formControlName="content" [config]="editorConfig">
+        </angular-editor>
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-raised-button (click)="onSubmit()" color='primary'>Submit</button>
+            <button mat-raised-button (click)="onCancel()">Cancel</button>
+        </div>
+    </form>
+</mat-card>

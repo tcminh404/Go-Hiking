@@ -1,0 +1,37 @@
+<div style="margin: 1em;" fxLayout='column' fxLayoutAlign='center center'>
+    <mat-card>
+        <h1>Decode a geolocation</h1>
+        <form fxLayout="column" [formGroup]="locationForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill" class="mat-full-width">
+                <mat-label>Latitude</mat-label>
+                <input matInput placeholder="Enter latitude" formControlName='lat' required>
+                <mat-error *ngIf="f.lat.errors?.required">Latitude required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="mat-full-width">
+                <mat-label>Longitude</mat-label>
+                <input matInput placeholder="Enter longitude" formControlName='lng' required>
+                <mat-error *ngIf="f.lng.errors?.required">Longitude required</mat-error>
+            </mat-form-field>
+            <mat-error fxLayout="row" fxLayoutAlign="start center" [fxShow]="errorMsg">
+                <mat-icon>error_outline</mat-icon>
+                <span class="mat-caption" class="agi-p-1">
+                    {{ errorMsg }}
+                </span>
+            </mat-error>
+            <mat-form-field appearance="fill" class="mat-full-width">
+                <mat-label>Offset</mat-label>
+                <input matInput placeholder="Enter offset" value="0.0" formControlName='offset'>
+            </mat-form-field>
+            <button mat-raised-button [disabled]="loading" [class.spinner]="loading">
+                Submit
+            </button>
+        </form>
+        <div *ngIf="result">
+            <h3>Result:</h3>
+            <p>Latitude: {{result.latitude}}</p>
+            <p>Longitude: {{result.longitude}}</p>
+            <p>Address: {{result.address}}</p>
+        </div>
+    </mat-card>
+</div>
