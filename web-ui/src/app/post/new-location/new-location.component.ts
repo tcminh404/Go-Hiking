@@ -36,7 +36,7 @@ export class NewLocationComponent implements OnInit {
       lat: ['', Validators.compose([Validators.required])],
       lng: ['', Validators.compose([Validators.required])],
       offset: [''],
-      address: [''],
+      address: ['', Validators.compose([Validators.required])],
       content: [''],
     })
   }
@@ -52,13 +52,21 @@ export class NewLocationComponent implements OnInit {
   }
 
   uploadFile(event) {
-    console.log(event.target.files);
+    this.startLoading()
     if (this.img) this.postService.deleteFile(this.img).subscribe(info => this.img = null)
-    this.postService.uploadFile(event.target.files[0]).subscribe(info => this.img = info)
+    this.postService.uploadFile(event.target.files[0]).subscribe(
+      info => {
+        this.img = info
+        this.stopLoading()
+      },
+      error => {
+        this.errorMsg = error.error.message
+        this.stopLoading()
+      }
+    )
   }
 
   onSubmit() {
-    this.getLocation()
     if (this.locationForm.invalid) {
       return
     }
@@ -92,12 +100,14 @@ export class NewLocationComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.locationForm.reset()
+      this.img = null
       this.reload.emit()
     });
   }
 
   onCancel() {
     this.locationForm.reset()
+    this.img = null
     this.cancel.emit()
   }
 

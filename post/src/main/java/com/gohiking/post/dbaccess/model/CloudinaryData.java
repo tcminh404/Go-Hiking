@@ -1,5 +1,6 @@
 package com.gohiking.post.dbaccess.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.Data;
 @Data
 @Document(collection = "cloudinary")
 public class CloudinaryData {
+    @Id
+    String id;
     String signature;
     String format;
     String resource_type;

@@ -1,3 +1,4 @@
+import { HereMapModule } from './../here-map/here-map.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -32,6 +33,7 @@ import { NewLocationComponent } from './new-location/new-location.component';
     FlexLayoutModule,
     HttpClientModule,
     AngularEditorModule,
+    HereMapModule,
   ],
   exports: [
     PostComponent

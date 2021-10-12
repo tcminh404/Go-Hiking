@@ -48,7 +48,7 @@ export class PostDetailComponent implements OnInit {
     this.post$ = this.posts$.pipe(map((posts: Post[]) => posts.find(hero => hero.parentId === null || hero.parentId === '')!))
     this.post$.subscribe(info => {
       if (info.type === 'story')
-        this.service.allLocationByParentId(this.postId).subscribe(locations => { this.locations = locations })
+        this.service.allLocationByParentId(this.postId).subscribe(locations => this.locations = locations)
     })
   }
 
@@ -126,5 +126,8 @@ export class PostDetailComponent implements OnInit {
   addLocation() {
     this.showLocation()
     this.locationOnEdit = null
+  }
+  displayMap(post) {
+    return (this.locations && this.locations.length > 0 && post.type === 'story')
   }
 }

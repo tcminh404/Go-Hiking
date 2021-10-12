@@ -1,6 +1,9 @@
 <div *ngIf="post$ | async as post">
     <mat-card style="margin: 1em;">
         <h1>{{ post.title }}</h1>
+        <mat-card *ngIf="displayMap(post)">
+            <app-here-map [locations]='locations'></app-here-map>
+        </mat-card>
         <div [innerHTML]="post.content"></div>
         <div *ngIf="post.type === 'story'">
             <div *ngFor="let item of locations">
