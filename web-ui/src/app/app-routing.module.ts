@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'map', loadChildren: () => import('./here-map/here-map.module').then((m) => m.HereMapModule) },
   { path: 'post', loadChildren: () => import('./post/post.module').then((m) => m.PostModule) },
   { path: 'geo', loadChildren: () => import('./geo/geo.module').then((m) => m.GeoModule) },
+  { path: 'user', canActivate: [AuthGuard], loadChildren: () => import('./user/user.module').then((m) => m.UserModule) },
   { path: '**', redirectTo: '' }
 ];
 

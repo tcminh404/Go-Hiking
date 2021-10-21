@@ -3,6 +3,8 @@ package com.gohiking.auth.dbaccess.model;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.gohiking.common.constant.GohikingConstant.AccessLevel;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -30,4 +32,5 @@ public class User {
     String lastName;
     String email;
     String phoneNumber;
+    AccessLevel access;
 }

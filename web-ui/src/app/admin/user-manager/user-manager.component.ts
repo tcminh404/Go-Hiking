@@ -12,7 +12,7 @@ import { UserService } from 'src/services/auth/user.service';
 export class UserManagerComponent implements OnInit {
   @Input() users: User[]
   dataSource: User[]
-  displayedColumns: string[] = ['username', 'email', 'role', 'firstName', 'lastName'];
+  displayedColumns: string[] = ['username', 'email', 'role', 'firstName', 'lastName', 'access'];
   adminRoles = AccessLevel.Admin
   constructor() { }
 

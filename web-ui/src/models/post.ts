@@ -5,4 +5,5 @@ export class Post {
     title: string
     content: string
     username: string
+    access: string
 }

@@ -17,7 +17,7 @@ export class GeoService {
     return this._geoMap
   }
 
-  decode(lat, lng, offset): Observable<GeoData> {
+  decode(lat, lng, offset = 0): Observable<GeoData> {
     return this.api.decode(lat, lng, offset)
   }
 

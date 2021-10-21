@@ -112,12 +112,12 @@ export class NewLocationComponent implements OnInit {
   }
 
   getLocation() {
+    this.startLoading()
     this.errorMsg = null
     if (this.f.lat.value == '' || this.f.lng.value == '') {
       this.errorMsg = "Input latitude and longitude to get address"
       return
     }
-    console.log(this.f.offset.value)
     if (this.f.offset.value === null || this.f.offset.value === '') this.f.offset.setValue(0)
     this.geoService.decode(this.f.lat.value, this.f.lng.value, this.f.offset.value).subscribe(
       (info) => {
@@ -133,6 +133,38 @@ export class NewLocationComponent implements OnInit {
         }, 500)
       }
     )
+  }
+
+  async getCurrentLocation() {
+    if (navigator.geolocation) {
+      this.startLoading()
+      navigator.geolocation.getCurrentPosition(position => {
+        this.f.lat.setValue(position.coords.latitude)
+        this.f.lng.setValue(position.coords.longitude)
+        this.geoService.decode(position.coords.latitude, position.coords.longitude).subscribe(
+          (info) => {
+            this.f.address.setValue(info.address)
+          },
+          (error) => {
+            this.errorMsg = error.msg || error.error.error || "UNKNOWN_ERROR"
+            this.stopLoading()
+          },
+          () => {
+            setTimeout(() => {
+              this.stopLoading()
+            }, 500)
+          }
+        )
+      })
+    }
+    else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  getCurrentCoords(_callback) {
+
+    _callback()
   }
 
   get f() {

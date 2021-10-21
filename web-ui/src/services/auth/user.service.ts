@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core'
 import { User } from 'src/models/user'
 import { map } from 'rxjs/operators'
 import { Util } from 'src/helpers/util.helper'
+import { FriendRequest } from 'src/models/friend-request'
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -128,4 +129,20 @@ export class UserService {
     }
     return this.userMap.get(username)
   }
+  addFriendRequest(request: FriendRequest) {
+    return this.api.addFriendRequest(request)
+  }
+  getFriendRequest() {
+    return this.api.getFriendRequest()
+  }
+  answerFriendRequest(requestId: string, answer: boolean) {
+    return this.api.answerFriendRequest(requestId, answer)
+  }
+  getFriend() {
+    return this.api.getFriends()
+  }
+  deleteFriend(friend: User) {
+    return this.api.deleteFriend(friend)
+  }
+
 }

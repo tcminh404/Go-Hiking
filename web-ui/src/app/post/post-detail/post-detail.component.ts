@@ -76,11 +76,9 @@ export class PostDetailComponent implements OnInit {
         (info) => {
           alert(info)
           this.reloadComment()
-          console.log(info)
         },
         (error) => {
           alert(error.error.message)
-          console.log(error)
         }
       )
     }
@@ -91,11 +89,9 @@ export class PostDetailComponent implements OnInit {
         (info) => {
           alert(info)
           this.reloadLocation()
-          console.log(info)
         },
         (error) => {
           alert(error.error.message)
-          console.log(error)
         }
       )
     }
@@ -128,6 +124,6 @@ export class PostDetailComponent implements OnInit {
     this.locationOnEdit = null
   }
   displayMap(post) {
-    return (this.locations && this.locations.length > 0 && post.type === 'story')
+    return (post.type === 'story')
   }
 }

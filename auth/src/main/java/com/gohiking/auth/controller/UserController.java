@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.gohiking.auth.dbaccess.mapper.DTO;
-import com.gohiking.auth.dbaccess.model.User;
+import com.gohiking.auth.dbaccess.model.*;
 import com.gohiking.auth.service.UserService;
 import com.gohiking.common.domain.dto.UserDTO;
 
@@ -45,12 +45,12 @@ public class UserController {
     }
 
     @PutMapping("/user/update")
-    public User updateUser(Principal principal, @RequestBody User updateUser) {
+    public User updateProfile(Principal principal, @RequestBody User updateUser) {
         if (principal == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expires");
         }
         User currentUser = userService.getUserInfoByUsername(principal.getName());
-        return userService.updateUser(currentUser, updateUser);
+        return userService.updateProfile(currentUser, updateUser);
     }
 
     @GetMapping("/users")
@@ -62,7 +62,7 @@ public class UserController {
         if (currentUser.getRoles().equals(ADMIN)) {
             return userService.getUsers();
         } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User don't have permission");
+            return userService.getPublicUsers();
         }
     }
 
@@ -81,4 +81,49 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "FAILED");
         }
     }
+
+    @GetMapping("/user/friends")
+    public List<User> getFriends(Principal principal) {
+        if (principal == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expires");
+        }
+        User user = userService.getUserInfoByUsername(principal.getName());
+        return userService.getFriends(user);
+    }
+
+    @DeleteMapping("user/friend/delete")
+    public String deleteFriend(Principal principal, @RequestBody User friend) {
+        if (principal == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expires");
+        }
+        User user = userService.getUserInfoByUsername(principal.getName());
+        return userService.deleteFriend(user, friend);
+    }
+
+    @PutMapping("/user/friendRequest/upsert")
+    public FriendRequest upsertFriendRequest(Principal principal, @RequestBody FriendRequest friendRequest) {
+        if (principal == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expires");
+        }
+        return userService.upsertFriendRequest(friendRequest);
+    }
+
+    @GetMapping("/user/friendRequests")
+    public List<FriendRequest> getFriendRequests(Principal principal) {
+        if (principal == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expires");
+        }
+        User user = userService.getUserInfoByUsername(principal.getName());
+        return userService.getFriendRequests(user);
+    }
+
+    @PutMapping("user/friendRequest/answer")
+    public String answerRequest(Principal principal, @RequestParam String requestId, @RequestParam boolean answer) {
+        if (principal == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expires");
+        }
+        User user = userService.getUserInfoByUsername(principal.getName());
+        return userService.answerRequest(user, requestId, answer);
+    }
+
 }

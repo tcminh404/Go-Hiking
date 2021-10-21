@@ -1,0 +1,47 @@
+version: '3.3'
+services:
+  db:
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - '$HOME/mongo:/data/db'
+    image: mongo
+  auth:
+    container_name: auth
+    build: 
+      context: ./auth
+      dockerfile: Dockerfile
+    ports: 
+      - "9010:9010"
+    image: auth
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/authservice?authSource=admin
+  post:
+    container_name: post
+    build: ./post
+    ports: 
+      - "9020:9020"
+    image: post
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/postservice?authSource=admin
+  geodecoder:
+    container_name: geodecoder
+    build: ./geodecoder
+    ports: 
+      - "9000:9000"
+    image: geodecoder
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/geodecoderservice?authSource=admin

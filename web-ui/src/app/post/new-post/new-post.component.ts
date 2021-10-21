@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Post } from 'src/models/post';
+import { ACCESS_TYPE, PUBLIC } from 'src/constants/access-type';
 
 @Component({
   selector: 'app-new-post',
@@ -16,6 +17,7 @@ export class NewPostComponent implements OnInit {
   user: User
   postForm: FormGroup
   errorMsg: string
+  TYPES = ACCESS_TYPE
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,6 +32,7 @@ export class NewPostComponent implements OnInit {
       title: ['', Validators.compose([Validators.required])],
       content: [''],
       type: [{ value: (this.data.post) ? this.data.post.type : 'post', disabled: this.data.post != null }, Validators.compose([Validators.required])],
+      access: [{ value: (this.data.post) ? this.data.post.access : PUBLIC }, Validators.compose([Validators.required])]
     })
     this.user = this.data.user
     if (this.data.post) {

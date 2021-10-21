@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Location } from 'src/models/location';
 
@@ -11,6 +11,7 @@ declare var H: any;
 })
 export class HereMapComponent implements OnInit {
   @Input() locations: Location[]
+  @Output() pickLocation = new EventEmitter<any>()
 
   map: any
 
@@ -29,45 +30,53 @@ export class HereMapComponent implements OnInit {
 
   public ngAfterViewInit() {
     let defaultLayers = this.platform.createDefaultLayers();
-    let lat = 0, lng = 0;
-    this.locations.map(data => {
-      lat += data.lat
-      lng += data.lng
-    })
-    lat = (lat / this.locations.length)
-    lng = (lng / this.locations.length)
     this.map = new H.Map(
       this.mapElement.nativeElement,
       defaultLayers.vector.normal.map,
       {
-        zoom: 8,
-        center: { lat: lat, lng: lng }
+        zoom: 0,
+        center: { lat: 0, lng: 0 }
       }
     );
     let mapEvents = new H.mapevents.MapEvents(this.map);
     new H.mapevents.Behavior(mapEvents);
     let ui = H.ui.UI.createDefault(this.map, defaultLayers);
-    this.addMarkersToMap(this.map)
+    this.setUpClickListener(this.map)
+    if (this.locations && this.locations.length > 0) {
+      this.addMarkersToMap(this.map)
+    }
   }
 
+  setUpClickListener(map) {
+    map.addEventListener('tap', (evt) => {
+      var coord = map.screenToGeo(evt.currentPointer.viewportX,
+        evt.currentPointer.viewportY);
+      this.pickLocation.emit({
+        lat: coord.lat,
+        lng: coord.lng
+      })
+    });
+  }
+
+
+
   ngOnChanges(): void {
-    if (this.map) {
+    if (this.map && this.locations && this.locations.length > 0) {
       this.map.removeObjects(this.map.getObjects())
       this.addMarkersToMap(this.map)
-      let lat = 0, lng = 0;
-      this.locations.map(data => {
-        lat += data.lat
-        lng += data.lng
-      })
-      this.map.setCenter({ lat: lat, lng: lng })
     }
   }
 
   addMarkersToMap(map) {
+    let group = new H.map.Group();
     this.locations.map(data => {
       let marker = new H.map.Marker({ lat: data.lat, lng: data.lng });
       //marker.setTitle(data.address);
-      map.addObject(marker)
+      group.addObject(marker)
     })
+    map.addObject(group)
+    map.getViewModel().setLookAtData({
+      bounds: group.getBoundingBox()
+    });
   }
 }

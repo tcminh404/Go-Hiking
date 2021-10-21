@@ -7,4 +7,5 @@ export class User {
     roles: AccessLevel
     firstName: string
     lastName: string
+    access: string
 }

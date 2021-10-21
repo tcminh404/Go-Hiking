@@ -11,4 +11,8 @@ public class GohikingConstant {
         public static final String HEREMAP = "heremap";
         public static final String GOOGLEMAP = "googlemap";
     }
+
+    public enum AccessLevel {
+        PUBLIC, FRIEND, PRIVATE
+    }
 }

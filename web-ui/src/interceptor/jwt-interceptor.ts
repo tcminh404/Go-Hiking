@@ -11,10 +11,12 @@ export class JwtInterceptor implements HttpInterceptor {
     constructor(private cookie: AuthCookieService, private auth: AuthService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (request.url.endsWith(API.LOGIN)) {
-            request = authHeader(request)
-        } else {
-            request = header(request, getToken(this.cookie))
+        if (!request.url.endsWith(API.CREATE)) {
+            if (request.url.endsWith(API.LOGIN)) {
+                request = authHeader(request)
+            } else {
+                request = header(request, getToken(this.cookie))
+            }
         }
         return next.handle(request)
     }

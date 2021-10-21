@@ -1,9 +1,19 @@
-<div fxLayout="row" fxLayoutAlign="center center">
+<div fxLayout="row" fxLayoutAlign="center center" style="margin: 1em;">
   <mat-card>
     <p>Username: {{user.username}}</p>
     <p>First Name: {{user.firstName}}</p>
     <p>Last Name: {{user.lastName}}</p>
     <p>Email: {{user.email}}</p>
+    <p>Access: {{user.access}}</p>
     <p *ngIf="isAdmin">Roles: Admin</p>
-  </mat-card>
+    <button mat-raised-button (click)='editProfile()'>Edit profile</button>
+    </mat-card>
+    <div fxFlex='grow' *ngIf="(requests &&requests.length>0)||(friends && friends.length>0)">
+      <mat-card *ngIf="requests &&requests.length>0">
+        <app-friend-request [requests]='requests'></app-friend-request>
+      </mat-card>
+      <mat-card *ngIf="friends && friends.length>0">
+        <app-friend [users]='friends'></app-friend>
+      </mat-card>
+    </div>
 </div>

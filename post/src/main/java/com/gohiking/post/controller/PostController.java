@@ -1,15 +1,24 @@
 package com.gohiking.post.controller;
 
-import java.io.File;
 import java.util.List;
 
+import com.gohiking.common.domain.dto.FriendDTO;
+import com.gohiking.common.domain.dto.UserDTO;
 import com.gohiking.post.dbaccess.model.*;
+import com.gohiking.post.feignclients.AuthServiceClient;
 import com.gohiking.post.service.PostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.extern.log4j.Log4j2;
+
+import static com.gohiking.common.constant.GohikingConstant.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Log4j2
 @CrossOrigin
 @RestController
 @RequestMapping(path = PostController.POST_SERVICE)
@@ -19,14 +28,27 @@ public class PostController {
     @Autowired
     PostService postService;
 
+    @Autowired
+    AuthServiceClient authServiceClient;
+
     @PutMapping("/post/upsert")
     Post upsertPost(@RequestBody Post post) {
         return postService.upsertPost(post);
     }
 
     @GetMapping("/posts")
-    List<Post> getPosts() {
-        return postService.getPosts();
+    List<Post> getPosts(@RequestHeader(value = AUTHORIZATION, required = false) String token) {
+        if (token != null && token != "") {
+            try {
+                UserDTO user = authServiceClient.getUserInfo(token);
+                List<UserDTO> friends = authServiceClient.getFriendList(token);
+                return (user.getRoles().equals(ADMIN)) ? postService.getPosts()
+                        : postService.getAccessiblePosts(user, friends);
+            } catch (Exception e) {
+                log.info("Error get user info: " + e);
+            }
+        }
+        return postService.getPublicPosts();
     }
 
     @DeleteMapping("/post/{id}")
@@ -81,4 +103,10 @@ public class PostController {
     String deleteLocation(@PathVariable("id") String postId) {
         return postService.deleteLocation(postId);
     }
+
+    @GetMapping(value = "/test")
+    public void getMethodName(@RequestBody List<FriendDTO> param) {
+        postService.getFriendPosts(param);
+    }
+
 }

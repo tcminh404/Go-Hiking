@@ -10,6 +10,14 @@
             <mat-option value="story">Story</mat-option>
         </mat-select>
     </mat-form-field>
+    <mat-form-field>
+        <mat-label>Access</mat-label>
+        <mat-select formControlName="access" required>
+            <mat-option *ngFor="let type of TYPES" [value]="type">
+                {{ type }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
     <angular-editor formControlName="content" [config]="editorConfig">
     </angular-editor>
     <div fxLayout="row" fxLayoutAlign="end center">

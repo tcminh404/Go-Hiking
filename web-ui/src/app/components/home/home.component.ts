@@ -1,4 +1,4 @@
-import { AccessLevel } from './../../../enums/access-level';
+import { AccessLevel } from '../../../enums/access-level';
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/services/auth/user.service';

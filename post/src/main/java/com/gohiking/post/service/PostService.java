@@ -1,11 +1,15 @@
 package com.gohiking.post.service;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import com.cloudinary.*;
 import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gohiking.common.domain.dto.FriendDTO;
+import com.gohiking.common.domain.dto.UserDTO;
 import com.gohiking.post.dbaccess.model.*;
 import com.gohiking.post.dbaccess.repository.*;
 
@@ -17,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.extern.log4j.Log4j2;
+
+import static com.gohiking.common.constant.GohikingConstant.AccessLevel.*;
 
 @Log4j2
 @Service
@@ -53,6 +59,36 @@ public class PostService {
 
     public List<Post> getPosts() {
         return postRepository.findAll();
+    }
+
+    public List<Post> getAccessiblePosts(UserDTO user, List<UserDTO> friends) {
+        List<Post> posts = new ArrayList<>();
+        posts.addAll(getPublicPosts());
+        posts.addAll(getUserPosts(user.getUsername()));
+        friends.forEach((friend) -> {
+            posts.addAll(getUserFriendPosts(friend.getUsername()));
+        });
+        return posts;
+    }
+
+    public List<Post> getPublicPosts() {
+        return postRepository.findByAccess(PUBLIC);
+    }
+
+    public List<Post> getUserPosts(String username) {
+        return postRepository.findByUsername(username);
+    }
+
+    public List<Post> getUserFriendPosts(String username) {
+        return postRepository.findByAccessAndUsername(FRIEND, username);
+    }
+
+    public List<Post> getFriendPosts(List<FriendDTO> friendList) {
+        List<Post> posts = new ArrayList<>();
+        friendList.forEach(data -> {
+            posts.addAll(postRepository.findByAccessAndUsername(FRIEND, data.getFriendUsername()));
+        });
+        return posts;
     }
 
     public String deletePost(String postId) {

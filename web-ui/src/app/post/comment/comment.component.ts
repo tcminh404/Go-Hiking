@@ -52,7 +52,6 @@ export class CommentComponent implements OnInit {
     comment.username = this.user.username
     comment.parentId = this.parentId
     if (this.comment) comment.postId = this.comment.postId
-    console.log(comment);
 
     this.postService.upsertComment(comment).subscribe(
       (info) => {

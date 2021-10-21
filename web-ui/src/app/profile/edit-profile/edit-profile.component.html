@@ -1,0 +1,41 @@
+<form fxLayout="column" [formGroup]="registerForm">
+    <mat-form-field appearance="fill" class="mat-full-width">
+        <mat-label>Username</mat-label>
+        <input matInput placeholder="Enter username" formControlName='username' required>
+        <mat-error *ngIf="f.username.errors?.required">Username required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="mat-full-width">
+        <mat-label>First Name</mat-label>
+        <input matInput placeholder="Enter password" formControlName='firstName'>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="mat-full-width">
+        <mat-label>Last Name</mat-label>
+        <input matInput placeholder="Enter password" formControlName='lastName'>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="mat-full-width">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Enter Email" formControlName='email'>
+        <mat-error *ngIf="f.email.errors?.email">Email not valid</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Access</mat-label>
+        <mat-select formControlName="access">
+            <mat-option *ngFor="let type of TYPES" [value]="type">
+                {{ type }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="start center" [fxShow]="errorMsg">
+        <mat-icon>error_outline</mat-icon>
+        <span class="mat-caption" class="agi-p-1">
+            {{ errorMsg }}
+        </span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <button mat-raised-button [disabled]="loading" [class.spinner]="loading" (click)="onSubmit()">
+            Submit
+        </button>
+        <button mat-button (click)="onCancel()">Cancel</button>
+    </div>
+
+</form>

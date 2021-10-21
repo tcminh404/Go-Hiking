@@ -5,14 +5,18 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-        <artifactId>gohiking</artifactId>
-        <groupId>com.gohiking</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
 	<artifactId>common</artifactId>
     <packaging>jar</packaging>
 	<name>common</name>
+	<groupId>com.gohiking</groupId>
+	<version>1.0-SNAPSHOT</version>
+	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>11</java.version>

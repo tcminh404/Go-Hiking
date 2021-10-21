@@ -3,12 +3,14 @@
     [ngClass]="{ disabled: homeRla.isActive }">
     <mat-icon>home</mat-icon>
   </button>
-  <button mat-button routerLink="/map" *ngIf="false" routerLinkActive #mapRla="routerLinkActive"
+  <button mat-button routerLink="/map" routerLinkActive #mapRla="routerLinkActive"
     [ngClass]="{ disabled: mapRla.isActive }">Map</button>
   <button mat-button routerLink="/post" routerLinkActive #postRla="routerLinkActive"
     [ngClass]="{ disabled: postRla.isActive }">Post</button>
   <button mat-button routerLink="/geo" routerLinkActive #geoRla="routerLinkActive"
     [ngClass]="{ disabled: geoRla.isActive }">Geo</button>
+    <button mat-button routerLink="/user" routerLinkActive #geoRla="routerLinkActive"
+      [ngClass]="{ disabled: geoRla.isActive }" *ngIf="isLogin">User</button>
   <button mat-button *ngIf="isAdmin" (click)="admin()">Admin</button>
   <button mat-button [matMenuTriggerFor]="userProfile">
     <mat-icon>account_circle</mat-icon>

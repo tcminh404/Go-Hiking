@@ -1,3 +1,4 @@
+import { PRIVATE } from 'src/constants/access-type';
 import { CommonDialogComponent } from './../../dialog/common-dialog/common-dialog.component';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
@@ -42,7 +43,8 @@ export class RegisterFormComponent implements OnInit {
       email: '',
       firstName: '',
       lastName: '',
-      roles: null
+      roles: null,
+      access: PRIVATE
     }
 
     this.registerForm = this.formBuilder.group({
@@ -65,6 +67,7 @@ export class RegisterFormComponent implements OnInit {
       return
     }
     let user = Object.assign({}, this.registerForm.getRawValue())
+    user.access = PRIVATE
     this.startLoading()
     this.preprocessData()
     this.errorMsg = null
@@ -75,6 +78,7 @@ export class RegisterFormComponent implements OnInit {
       },
       (error) => {
         this.errorMsg = error.error.message || error.error.error || "UNKNOWN_ERROR"
+        this.stopLoading()
       },
       () => {
         setTimeout(() => {

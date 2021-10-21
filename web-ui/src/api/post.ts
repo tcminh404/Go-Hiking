@@ -82,6 +82,7 @@ interface Post {
     title: string
     content: string
     username: string
+    access: string
 }
 interface Comment {
     postId: string

@@ -1,0 +1,13 @@
+<h2>Friend request:</h2>
+<p>Username: {{request.requestUsername}}</p>
+<p>Message: {{request.msg}}</p>
+<div fxLayout='row'>
+    <button mat-raised-button (click)="answerRequest(true)" fxFlex='grow' color='primary'
+        *ngIf="canAnswer()">Accept</button>
+    <button mat-raised-button (click)="answerRequest(false)" fxFlex='grow' color='gray'>
+        {{canAnswer()?'Decline':'Cancel request'}}
+    </button>
+</div>
+<div fxLayout='row'>
+    <button mat-raised-button (click)="closeDialog()" fxFlex='grow'>Close</button>
+</div>

@@ -1,5 +1,16 @@
 <mat-card fxLayout='row' fxLayoutAlign="space-between" *ngIf="user">
-    <button mat-button>My Post</button>
-    <button mat-button (click)="newPost()">New Post</button>
+    <mat-button-toggle-group value='all' (change)='filterPosts($event.value)'>
+        <mat-button-toggle value="all">All</mat-button-toggle>
+        <mat-button-toggle value="seft">My</mat-button-toggle>
+        <mat-button-toggle value="friend">Friend</mat-button-toggle>
+        <mat-button-toggle value="public">Public</mat-button-toggle>
+    </mat-button-toggle-group>
+    <button mat-raised-button (click)="newPost()">New Post</button>
 </mat-card>
-<app-post-list [posts]='posts' [user]='user' (delete)="onDelete($event)" (edit)='onEdit($event)'></app-post-list>
+<ng-container *ngIf="!displayPost(); else postList">
+    <mat-card style="margin: 1em;">No post available</mat-card>
+</ng-container>
+<ng-template #postList>
+    <app-post-list [posts]='dataSource' [user]='user' (delete)="onDelete($event)" (edit)='onEdit($event)'>
+    </app-post-list>
+</ng-template>

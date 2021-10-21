@@ -24,6 +24,7 @@
             <input matInput placeholder="Address" formControlName="address" required>
         </mat-form-field>
         <button mat-raised-button (click)="getLocation()">Get address</button>
+        <button mat-raised-button (click)="getCurrentLocation()">Get current location</button>
         <mat-error>{{errorMsg}}</mat-error>
         <angular-editor formControlName="content" [config]="editorConfig">
         </angular-editor>

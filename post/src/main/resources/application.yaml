@@ -1,5 +1,6 @@
 server:
   port: ${SERVER_PORT:9020}
+  auth: localhost
 
 spring:
   data:
