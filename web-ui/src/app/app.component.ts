@@ -32,5 +32,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  title = 'web-ui';
+  displayHome() {
+    return this.router.url === '/'
+  }
 }

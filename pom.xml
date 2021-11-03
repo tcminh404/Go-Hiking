@@ -22,7 +22,7 @@
         <module>common</module>
         <module>auth</module>
         <module>post</module>
-        <module>geodecoder</module>
+        <module>geo</module>
     </modules>
 
     <properties>

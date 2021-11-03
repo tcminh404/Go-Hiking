@@ -1,6 +1,8 @@
+import { MatTableDataSource } from '@angular/material/table';
 import { Post } from 'src/models/post';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from 'src/models/user';
+import { AccessLevel } from 'src/enums/access-level';
 
 @Component({
   selector: 'app-post-list',
@@ -12,16 +14,20 @@ export class PostListComponent implements OnInit {
   @Input() user: User
   @Output() delete = new EventEmitter<Post>()
   @Output() edit = new EventEmitter<Post>()
-  dataSource: Post[]
-  displayedColumns: string[] = ['postId', 'parentId', 'type', 'title', 'content'];
+  isAdmin = false
+  adminRole = AccessLevel.Admin
+  dataSource: MatTableDataSource<Post>
+  displayedColumns: string[] = ['title', 'user', 'type', 'access', 'action'];
 
-  constructor() { }
+  constructor() {
+    this.dataSource = new MatTableDataSource
+  }
 
   ngOnInit(): void {
   }
 
   ngOnChanges() {
-    this.dataSource = this.posts
+    this.dataSource.data = this.posts
   }
 
   onDelete(post: Post) {

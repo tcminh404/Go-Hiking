@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class GeoApi {
     private readonly BASE_PATH = API.GEO
-    private readonly GEODECODER = `/geo`
+    private readonly GEO = `/geo`
     private readonly GET_ALL_PATH = `/locations`
 
     constructor(private http: HttpClient) { }
@@ -16,7 +16,7 @@ export class GeoApi {
             .append('lat', lat)
             .append('lng', lng)
             .append('offset', offset)
-        return this.http.get<GeoData>(`${this.BASE_PATH}${this.GEODECODER}`, { params: params })
+        return this.http.get<GeoData>(`${this.BASE_PATH}${this.GEO}`, { params: params })
     }
 
     all(): Observable<GeoData[]> {

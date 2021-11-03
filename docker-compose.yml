@@ -33,15 +33,25 @@ services:
       - db
     environment:
       - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/postservice?authSource=admin
-  geodecoder:
-    container_name: geodecoder
-    build: ./geodecoder
+  geo:
+    container_name: geo
+    build: ./geo
     ports: 
       - "9000:9000"
-    image: geodecoder
+    image: geo
     depends_on:
       - db
     links:
       - db
     environment:
-      - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/geodecoderservice?authSource=admin
+      - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/geoservice?authSource=admin
+  # ui:
+  #   container_name: ui
+  #   build: ./web-ui
+  #   ports:
+  #     - "4200:4200"
+  #   image: ui
+  #   links:
+  #     - auth
+  #     - post
+  #     - geo

@@ -5,7 +5,7 @@
 .mat-row .mat-cell {
   border-bottom: 1px solid transparent;
   border-top: 1px solid transparent;
-  cursor: pointer;
+  //cursor: pointer;
 }
 
 .mat-row:hover .mat-cell {
@@ -14,4 +14,15 @@
 
 .demo-row-is-clicked {
   font-weight: bold;
+}
+.mat-column-type {
+  width: 10%;
+}
+
+.mat-column-access {
+  width: 10%;
+}
+
+.mat-column-action {
+  width: 10%;
 }

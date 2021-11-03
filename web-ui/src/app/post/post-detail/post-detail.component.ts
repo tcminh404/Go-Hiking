@@ -97,7 +97,7 @@ export class PostDetailComponent implements OnInit {
     }
   }
   showLocationAction(post, user) {
-    return (post.username === user.username && post.type === 'story')
+    return (user && post.username === user.username && post.type === 'story')
   }
   showLocation() {
     this.showEditLocation = true

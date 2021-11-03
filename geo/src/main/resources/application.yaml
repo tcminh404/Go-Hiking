@@ -1,0 +1,18 @@
+server:
+  port: ${SERVER_PORT:9000}
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://mongoadmin:mongoadmin@localhost:27017/geoservice?authSource=admin&connectTimeoutms=5000&serverSelectionTimeoutMS=10000
+  mapservice:
+    server: heremap
+    offset: 0.0
+    
+map:
+  hereapi:
+    key: G--0SSjrus1VM1PIBs75jm48Vcras6cDUHgvR39KxQc
+    limit: 10
+  googleapi:
+    key: null
+    limit: null
