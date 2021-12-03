@@ -28,6 +28,8 @@ export class PostListComponent implements OnInit {
 
   ngOnChanges() {
     this.dataSource.data = this.posts
+    if (this.user)
+      this.isAdmin = this.user.roles === AccessLevel.Admin
   }
 
   onDelete(post: Post) {
@@ -36,5 +38,9 @@ export class PostListComponent implements OnInit {
 
   onEdit(item) {
     this.edit.emit(item)
+  }
+
+  showAction(element) {
+    return this.user && (this.isAdmin || element.username === this.user.username)
   }
 }

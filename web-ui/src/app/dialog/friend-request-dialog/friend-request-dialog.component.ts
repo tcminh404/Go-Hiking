@@ -31,7 +31,7 @@ export class FriendRequestDialogComponent implements OnInit {
     this.userService.answerFriendRequest(this.request.id, value).subscribe(
       info => {
         alert(info)
-        this.closeDialog
+        this.closeDialog()
       },
       error => { alert(error.error.message) }
     )

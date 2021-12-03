@@ -17,8 +17,6 @@ services:
     image: auth
     depends_on:
       - db
-    links:
-      - db
     environment:
       - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/authservice?authSource=admin
   post:
@@ -28,8 +26,6 @@ services:
       - "9020:9020"
     image: post
     depends_on:
-      - db
-    links:
       - db
     environment:
       - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/postservice?authSource=admin
@@ -41,8 +37,6 @@ services:
     image: geo
     depends_on:
       - db
-    links:
-      - db
     environment:
       - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/geoservice?authSource=admin
   # ui:
@@ -51,7 +45,8 @@ services:
   #   ports:
   #     - "4200:4200"
   #   image: ui
-  #   links:
+  #   depends_on:
   #     - auth
   #     - post
   #     - geo
+  

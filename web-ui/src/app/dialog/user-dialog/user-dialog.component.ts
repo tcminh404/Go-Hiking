@@ -13,6 +13,7 @@ export class UserDialogComponent implements OnInit {
   user: User
   loginUser: User
   canAddFriend: boolean
+  canDeleteFriend: boolean
   isAdmin: boolean
 
   @ViewChild('message')
@@ -28,6 +29,7 @@ export class UserDialogComponent implements OnInit {
     this.user = this.data.user;
     this.loginUser = this.data.loginUser;
     this.canAddFriend = this.data.canAddFriend;
+    this.canDeleteFriend = this.data.canDeleteFriend
     this.isAdmin = this.data.user.roles === AccessLevel.Admin
   }
 
@@ -49,6 +51,19 @@ export class UserDialogComponent implements OnInit {
     )
   }
 
+  deleteFriend() {
+    if (confirm("Are you sure to delete friend with " + this.user.username))
+      this.userService.deleteFriend(this.user).subscribe(
+        info => {
+          alert("Success")
+          this.closeDialog()
+        },
+        error => {
+          alert(error.error.message)
+        }
+      )
+  }
+
   closeDialog() {
     this.dialogRef.close();
   }
@@ -58,4 +73,5 @@ interface UserDialogData {
   loginUser: User
   user: User
   canAddFriend: boolean
+  canDeleteFriend: boolean
 }

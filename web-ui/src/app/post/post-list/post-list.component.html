@@ -1,13 +1,13 @@
-<div style="margin: 1em;">
+<div style="margin: 1em;" *ngIf="false">
     <div *ngFor="let post of dataSource.data" style="list-style: none;">
-        <mat-card class="post-card">
+        <mat-card class="post-card" style="margin: .5em;">
             <mat-card-content>
                 <mat-card-title [routerLink]="['/post', post.postId]" class="clickable"> {{post.title}}</mat-card-title>
                 <mat-card-subtitle>User: {{post.username}}, type: {{post.type}}, access: {{post.access}}
                 </mat-card-subtitle>
             </mat-card-content>
             <mat-card-actions align='end' *ngIf="user">
-                <div *ngIf="post.username === user.username">
+                <div *ngIf="showAction(post)">
                     <mat-icon (click)="onEdit(post)" class="clickable">edit</mat-icon>
                     <mat-icon (click)="onDelete(post)" class="clickable">delete</mat-icon>
                 </div>
@@ -39,7 +39,7 @@
         <ng-container matColumnDef='action'>
             <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef='let element'>
-                <div *ngIf="user && element.username === user.username">
+                <div *ngIf="showAction(element)">
                     <mat-icon (click)="onEdit(element)" class="clickable">edit</mat-icon>
                     <mat-icon (click)="onDelete(element)" class="clickable">delete</mat-icon>
                 </div>

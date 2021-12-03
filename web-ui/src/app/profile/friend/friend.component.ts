@@ -1,6 +1,6 @@
 import { AccessLevel } from 'src/enums/access-level';
 import { AuthService } from 'src/services/auth/auth.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GeoData } from 'src/models/geo-data';
 import { GeoService } from 'src/services/geo.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -16,6 +16,7 @@ import { UserService } from 'src/services/auth/user.service';
 })
 export class FriendComponent implements OnInit {
   @Input() users: User[]
+  @Output() reload = new EventEmitter()
   dataSource: MatTableDataSource<User>
   displayedColumns: string[] = ['username', 'email', 'role', 'firstName', 'lastName'];
   adminRoles = AccessLevel.Admin
@@ -43,9 +44,11 @@ export class FriendComponent implements OnInit {
     let dialogRef = this.dialog.open(UserDialogComponent, {
       data: {
         user: row,
-        canAddFriend: false
+        canAddFriend: false,
+        canDeleteFriend: true
       }
     })
+    dialogRef.afterClosed().subscribe(() => { this.reload.emit() })
   }
 
   ngOnChanges() {

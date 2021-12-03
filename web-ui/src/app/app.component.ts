@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/services/auth/auth.service';
@@ -14,7 +15,12 @@ export class AppComponent implements OnInit {
   msg: string
   user: User
 
-  constructor(private auth: AuthService, private cookie: AuthCookieService, private router: Router) { }
+  constructor(
+    private auth: AuthService,
+    private cookie: AuthCookieService,
+    private router: Router,
+    private http: HttpClient
+  ) { }
   ngOnInit() {
     this.cookie.clearUsernamePassword()
     this.msg = 'Please wait while we set things up for you!'

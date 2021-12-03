@@ -36,6 +36,7 @@ export class NewLocationComponent implements OnInit {
       lat: ['', Validators.compose([Validators.required])],
       lng: ['', Validators.compose([Validators.required])],
       offset: [''],
+      img: [''],
       address: ['', Validators.compose([Validators.required])],
       content: [''],
     })
@@ -47,7 +48,7 @@ export class NewLocationComponent implements OnInit {
       this.f.lng.setValue(this.location.lng)
       this.f.address.setValue(this.location.address)
       this.f.content.setValue(this.location.content)
-      this.img = this.location.img
+      this.f.img.setValue(this.location.img)
     }
   }
 
@@ -57,6 +58,7 @@ export class NewLocationComponent implements OnInit {
     this.postService.uploadFile(event.target.files[0]).subscribe(
       info => {
         this.img = info
+        this.f.img.setValue(info)
         this.stopLoading()
       },
       error => {
@@ -66,13 +68,16 @@ export class NewLocationComponent implements OnInit {
     )
   }
 
+  changeImg(event) {
+    this.img = event.target.value
+  }
+
   onSubmit() {
     if (this.locationForm.invalid) {
       return
     }
     let location: Location = this.locationForm.value
     location.username = this.user.username
-    location.img = this.img
     location.parentId = this.parentId
     if (this.location) location.postId = this.location.postId
     this.postService.upsertLocation(location).subscribe(

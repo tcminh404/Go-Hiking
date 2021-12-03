@@ -1,11 +1,15 @@
 <mat-card>
     <form [formGroup]='locationForm'>
-        <div>
+        <div *ngIf="img">
             <h3>Image preview</h3>
             <img [src]="img" alt="" style="max-width: 10em;">
-            </div>
-            <div>
+        </div>
+        <div>
             <input type="file" id="file" (change)="uploadFile($event)" accept="image/png, image/gif, image/jpeg">
+            <mat-form-field>
+                <mat-label>Image url</mat-label>
+                <input matInput placeholder="Input image url" formControlName="img" (change)="changeImg($event)">
+            </mat-form-field>
         </div>
         <mat-form-field>
             <mat-label>Latitude</mat-label>

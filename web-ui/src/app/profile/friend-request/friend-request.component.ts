@@ -1,7 +1,7 @@
 import { FriendRequestDialogComponent } from 'src/app/dialog/friend-request-dialog/friend-request-dialog.component';
 import { AccessLevel } from 'src/enums/access-level';
 import { AuthService } from 'src/services/auth/auth.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GeoData } from 'src/models/geo-data';
 import { GeoService } from 'src/services/geo.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -18,6 +18,7 @@ import { FriendRequest } from 'src/models/friend-request';
 })
 export class FriendRequestComponent implements OnInit {
   @Input() requests: FriendRequest[]
+  @Output() reload = new EventEmitter()
   dataSource: MatTableDataSource<FriendRequest>
   displayedColumns: string[] = ['request', 'target', 'msg'];
   adminRoles = AccessLevel.Admin
@@ -47,6 +48,7 @@ export class FriendRequestComponent implements OnInit {
         request: row
       }
     })
+    dialogRef.afterClosed().subscribe(() => this.reload.emit())
   }
 
   ngOnChanges() {

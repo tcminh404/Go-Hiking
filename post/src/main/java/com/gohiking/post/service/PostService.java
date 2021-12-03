@@ -64,6 +64,7 @@ public class PostService {
     public List<Post> getAccessiblePosts(UserDTO user, List<UserDTO> friends) {
         List<Post> posts = new ArrayList<>();
         posts.addAll(getPublicPosts());
+        posts.removeIf(data -> (data.getUsername().equals(user.getUsername())));
         posts.addAll(getUserPosts(user.getUsername()));
         friends.forEach((friend) -> {
             posts.addAll(getUserFriendPosts(friend.getUsername()));

@@ -10,10 +10,10 @@
     </mat-card>
     <div fxFlex='grow' *ngIf="(requests &&requests.length>0)||(friends && friends.length>0)">
       <mat-card *ngIf="requests &&requests.length>0">
-        <app-friend-request [requests]='requests'></app-friend-request>
+        <app-friend-request [requests]='requests' (reload)="reloadData()"></app-friend-request>
       </mat-card>
       <mat-card *ngIf="friends && friends.length>0">
-        <app-friend [users]='friends'></app-friend>
+        <app-friend [users]='friends' (reload)="reloadData()"></app-friend>
       </mat-card>
     </div>
 </div>
