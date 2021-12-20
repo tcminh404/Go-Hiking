@@ -9,8 +9,10 @@ import com.gohiking.post.feignclients.AuthServiceClient;
 import com.gohiking.post.service.PostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -32,8 +34,19 @@ public class PostController {
     AuthServiceClient authServiceClient;
 
     @PutMapping("/post/upsert")
-    Post upsertPost(@RequestBody Post post) {
-        return postService.upsertPost(post);
+    Post upsertPost(@RequestBody Post post, @RequestHeader(value = AUTHORIZATION) String token) {
+        if (isValidString(token)) {
+            try {
+                UserDTO user = authServiceClient.getUserInfo(token);
+                if (!isValidString(post.getUsername()))
+                    post.setUsername(user.getUsername());
+            } catch (Exception e) {
+                log.info("Error get user info: " + e);
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            }
+            return postService.upsertPost(post);
+        }
+        throw new ResponseStatusException(HttpStatus.CHECKPOINT);
     }
 
     @GetMapping("/posts")
@@ -57,17 +70,24 @@ public class PostController {
     }
 
     @PutMapping("/comment/upsert")
-    Comment upsertComments(@RequestBody Comment comment) {
-        return postService.upsertComment(comment);
+    Comment upsertComments(@RequestBody Comment comment, @RequestHeader(value = AUTHORIZATION) String token) {
+        if (isValidString(token)) {
+            try {
+                UserDTO user = authServiceClient.getUserInfo(token);
+                if (!isValidString(comment.getUsername()))
+                    comment.setUsername(user.getUsername());
+            } catch (Exception e) {
+                log.info("Error get user info: " + e);
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            }
+            return postService.upsertComment(comment);
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
 
-    @GetMapping("/comments")
-    List<Comment> getComments(@RequestParam(required = false) String parentId) {
-        if (parentId != null) {
-            return postService.getComments(parentId);
-        } else {
-            return postService.getComments();
-        }
+    @GetMapping("/comments/{parentId}")
+    List<Comment> getComments(@PathVariable("parentId") String parentId) {
+        return postService.getComments(parentId);
     }
 
     @DeleteMapping("/comment/{id}")
@@ -86,17 +106,24 @@ public class PostController {
     }
 
     @PutMapping("/location/upsert")
-    Location upsertLocations(@RequestBody Location location) {
-        return postService.upsertLocation(location);
+    Location upsertLocations(@RequestBody Location location, @RequestHeader(value = AUTHORIZATION) String token) {
+        if (isValidString(token)) {
+            try {
+                UserDTO user = authServiceClient.getUserInfo(token);
+                if (!isValidString(location.getUsername()))
+                    location.setUsername(user.getUsername());
+            } catch (Exception e) {
+                log.info("Error get user info: " + e);
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            }
+            return postService.upsertLocation(location);
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
 
-    @GetMapping("/locations")
-    List<Location> getLocations(@RequestParam(required = false) String parentId) {
-        if (parentId != null) {
-            return postService.getLocations(parentId);
-        } else {
-            return postService.getLocations();
-        }
+    @GetMapping("/locations/{parentId}")
+    List<Location> getLocations(@PathVariable("parentId") String parentId) {
+        return postService.getLocations(parentId);
     }
 
     @DeleteMapping("/location/{id}")
@@ -104,9 +131,12 @@ public class PostController {
         return postService.deleteLocation(postId);
     }
 
-    @GetMapping(value = "/test")
-    public void getMethodName(@RequestBody List<FriendDTO> param) {
-        postService.getFriendPosts(param);
+    public boolean isValidString(String s) {
+        if (s == null)
+            return false;
+        if (s.equals(""))
+            return false;
+        return true;
     }
 
 }

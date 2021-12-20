@@ -30,6 +30,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User createUser(User newUser) {
+        if (!(isValidString(newUser.getUsername()) && isValidString(newUser.getPassword())))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid username, password");
         boolean isUsernameExist = userRepository.existsByUsername(newUser.getUsername());
         if (isUsernameExist) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "username: User name already exist");
@@ -126,6 +128,14 @@ public class UserService {
         friendRepository.delete(friendRepository.findByUserIdAndFriendUsername(user.getId(), friend.getUsername()));
         friendRepository.delete(friendRepository.findByUserIdAndFriendUsername(friend.getId(), user.getUsername()));
         return "Success";
+    }
+
+    public boolean isValidString(String s) {
+        if (s == null)
+            return false;
+        if (s.equals(""))
+            return false;
+        return true;
     }
 
 }

@@ -13,4 +13,6 @@ public interface PostRepository extends MongoRepository<Post, String> {
     List<Post> findByUsername(String username);
 
     List<Post> findByAccessAndUsername(AccessLevel access, String username);
+
+    boolean existsById(String id);
 }

@@ -13,16 +13,16 @@
                 <input matInput placeholder="Enter longitude" formControlName='lng' required>
                 <mat-error *ngIf="f.lng.errors?.required">Longitude required</mat-error>
             </mat-form-field>
+            <mat-form-field appearance="fill" class="mat-full-width">
+                <mat-label>Offset</mat-label>
+                <input matInput placeholder="Enter offset" value="0.0" formControlName='offset'>
+            </mat-form-field>
             <mat-error fxLayout="row" fxLayoutAlign="start center" [fxShow]="errorMsg">
                 <mat-icon>error_outline</mat-icon>
                 <span class="mat-caption" class="agi-p-1">
                     {{ errorMsg }}
                 </span>
             </mat-error>
-            <mat-form-field appearance="fill" class="mat-full-width">
-                <mat-label>Offset</mat-label>
-                <input matInput placeholder="Enter offset" value="0.0" formControlName='offset'>
-            </mat-form-field>
             <button mat-raised-button [disabled]="loading" [class.spinner]="loading">
                 Submit
             </button>

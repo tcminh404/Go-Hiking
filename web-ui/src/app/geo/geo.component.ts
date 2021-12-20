@@ -45,11 +45,7 @@ export class GeoComponent implements OnInit {
         this.result = info
       },
       (error) => {
-        if (error.status === 400) {
-          this.errorMsg = 'Username or Password is incorrect'
-        } else {
-          this.errorMsg = error.msg || error.error.error || "UNKNOWN_ERROR"
-        }
+        this.errorMsg = error.error.message || error.error.error || "UNKNOWN_ERROR"
         this.stopLoading()
       },
       () => {

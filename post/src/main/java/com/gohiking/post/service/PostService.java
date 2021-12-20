@@ -54,6 +54,8 @@ public class PostService {
     }
 
     public Post upsertPost(Post post) {
+        if (!isValidString(post.getTitle()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing title");
         return postRepository.save(post);
     }
 
@@ -103,6 +105,10 @@ public class PostService {
     }
 
     public Comment upsertComment(Comment comment) {
+        if (!(isValidString(comment.getParentId()) && isValidPost(comment.getParentId())))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid parent post");
+        if (!isValidString(comment.getContent()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid content");
         return commentRepository.save(comment);
     }
 
@@ -147,6 +153,8 @@ public class PostService {
     }
 
     public Location upsertLocation(Location location) {
+        if (!(isValidString(location.getParentId()) && isValidPost(location.getParentId())))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid parent post");
         return locationRepository.save(location);
     }
 
@@ -163,5 +171,21 @@ public class PostService {
             deleteFile(locationRepository.findById(postId).get().getImg());
         locationRepository.deleteById(postId);
         return "Success";
+    }
+
+    public boolean isValidString(String s) {
+        if (s == null)
+            return false;
+        if (s.equals(""))
+            return false;
+        return true;
+    }
+
+    public boolean isValidPost(String id) {
+        try {
+            return postRepository.existsById(id);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

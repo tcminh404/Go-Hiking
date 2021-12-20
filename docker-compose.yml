@@ -39,14 +39,14 @@ services:
       - db
     environment:
       - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/geoservice?authSource=admin
-  # ui:
-  #   container_name: ui
-  #   build: ./web-ui
-  #   ports:
-  #     - "4200:4200"
-  #   image: ui
-  #   depends_on:
-  #     - auth
-  #     - post
-  #     - geo
+  ui:
+    container_name: ui
+    build: ./web-ui
+    ports:
+      - "4200:4200"
+    image: ui
+    depends_on:
+      - auth
+      - post
+      - geo
   

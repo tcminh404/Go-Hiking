@@ -36,9 +36,7 @@ export class PostApi {
     }
 
     allCommentByParentId(parentId: string): Observable<Comment[]> {
-        const params = new HttpParams()
-            .set('parentId', parentId)
-        return this.http.get<Comment[]>(`${this.BASE_PATH}${this.COMMENT_PATH}${this.GET_ALL_PATH}`, { params: params })
+        return this.http.get<Comment[]>(`${this.BASE_PATH}${this.COMMENT_PATH}${this.GET_ALL_PATH}/${parentId}`)
     }
 
     deleteComment(postId: string): Observable<string> {
@@ -66,9 +64,7 @@ export class PostApi {
     }
 
     allLocationByParentId(parentId: string): Observable<Location[]> {
-        const params = new HttpParams()
-            .set('parentId', parentId)
-        return this.http.get<Location[]>(`${this.BASE_PATH}${this.LOCATION_PATH}${this.GET_ALL_PATH}`, { params: params })
+        return this.http.get<Location[]>(`${this.BASE_PATH}${this.LOCATION_PATH}${this.GET_ALL_PATH}/${parentId}`)
     }
 
     deleteLocation(postId: string): Observable<string> {
