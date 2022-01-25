@@ -1,8 +1,22 @@
 # Go-Hiking
 
-Docker
+Build
 ```
-    docker container stop mongo; docker run --name mongo -p 27017:27017 -v $HOME/mongo:/data/db --rm -it mongo
-    docker exec -it mongo sh -c 'exec mongosh'
-    db.createUser({ user: "mongoadmin" , pwd: "mongoadmin", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", readWriteAnyDatabase"]})
+cd Go-Hiking
+mvn clean install
+cd web-ui
+npm i
+ng build --prod
+```
+
+Run
+```
+cd Go-Hiking
+docker-compose up --build
+```
+
+Add DB user
+```
+docker exec -it mongo sh -c 'exec mongosh'
+db.createUser({ user: "mongoadmin" , pwd: "mongoadmin", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", readWriteAnyDatabase"]})
 ```
