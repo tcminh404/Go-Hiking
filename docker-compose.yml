@@ -5,13 +5,13 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      - '$HOME/mongo:/data/db'
+      - 'data:/data/db'
     image: mongo
   auth:
     container_name: auth
     build: 
-      context: ./auth
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./auth/Dockerfile
     ports: 
       - "9010:9010"
     image: auth
@@ -21,7 +21,9 @@ services:
       - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/authservice?authSource=admin
   post:
     container_name: post
-    build: ./post
+    build:
+      context: ./
+      dockerfile: ./post/Dockerfile
     ports: 
       - "9020:9020"
     image: post
@@ -31,7 +33,9 @@ services:
       - spring.data.mongodb.uri=mongodb://mongoadmin:mongoadmin@db:27017/postservice?authSource=admin
   geo:
     container_name: geo
-    build: ./geo
+    build:
+      context: ./
+      dockerfile: ./geo/Dockerfile
     ports: 
       - "9000:9000"
     image: geo
@@ -49,4 +53,6 @@ services:
       - auth
       - post
       - geo
-  
+
+volumes: 
+  data:
