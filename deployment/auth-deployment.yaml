@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: auth
+  name: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: auth
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: auth
+    spec:
+      containers:
+        - env:
+            - name: spring.data.mongodb.uri
+              value: mongodb://mongoadmin:mongoadmin@db:27017/authservice?authSource=admin
+          image: auth
+          name: auth
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 9010
+          resources: {}
+      restartPolicy: Always
+status: {}

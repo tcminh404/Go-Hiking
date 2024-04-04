@@ -7,7 +7,7 @@ ADD ./ /build/
 RUN ./mvnw clean install -f /build/common/pom.xml
 RUN ./mvnw clean install -f /build/post/pom.xml
 
-FROM openjdk:11-jdk
+FROM openjdk:11-jre
 
 ARG JAR_FILE=*.jar
 COPY --from=build /build/post/target/${JAR_FILE} /usr/share/go-hiking/post/post.jar

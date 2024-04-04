@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app: go-hiking
+resources:
+  - data-persistentvolumeclaim.yaml
+  - db-deployment.yaml
+  - db-service.yaml
+  - auth-deployment.yaml
+  - auth-service.yaml
+  - post-deployment.yaml
+  - post-service.yaml
+  - geo-deployment.yaml
+  - geo-service.yaml
+  - ui-deployment.yaml
+  - ui-service.yaml
